@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Portal - Bin There</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+        }
+        .vendor-card {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            backdrop-filter: blur(10px);
+        }
+        .green-badge {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .tab-active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .tab-inactive {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <i data-feather="arrow-left" class="h-6 w-6 text-gray-600"></i>
+                        <span class="ml-2 text-lg font-medium text-gray-900">Back to Home</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden sm:block text-sm text-gray-500">Vendor Portal</div>
+                    <button id="vendor-logout" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 flex items-center">
+                        <i data-feather="log-out" class="h-4 w-4 mr-2"></i>
+                        Logout
+                    </button>
+                    <i data-feather="trash-2" class="h-8 w-8 text-emerald-500"></i>
+                    <span class="ml-2 text-xl font-bold text-gray-900">Bin There</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Vendor Header -->
+        <div class="text-center mb-8" data-aos="fade-down">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Vendor Portal</h1>
+            <p class="text-gray-600">Join the Green Vendor Program and grow your business</p>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="registration-section" class="max-w-2xl mx-auto" data-aos="fade-up">
+            <div class="bg-white rounded-xl shadow-sm p-8">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-feather="shopping-bag" class="h-8 w-8 text-blue-600"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Become a Green Vendor</h2>
+                    <p class="text-gray-600">Register your business and start attracting eco-conscious customers</p>
+                </div>
+
+                <form id="vendorForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Business Name *</label>
+                            <input type="text" name="businessName" required 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Business Type *</label>
+                            <select name="businessType" required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select business type</option>
+                                <option value="restaurant">Restaurant/Cafe</option>
+                                <option value="retail">Retail Store</option>
+                                <option value="service">Service Provider</option>
+                                <option value="market">Market Vendor</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Business Address *</label>
+                        <textarea name="address" rows="3" required 
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                  placeholder="Enter your complete business address"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Contact Person *</label>
+                            <input type="text" name="contactPerson" required 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                            <input type="tel" name="phone" required 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                        <input type="email" name="email" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Business Description</label>
+                        <textarea name="description" rows="4" 
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                  placeholder="Tell us about your business and how you handle waste"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Waste Management Practices</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="practices" value="recycling" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-700">Recycling program</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="practices" value="composting" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-700">Composting organic waste</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="practices" value="reusable" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-700">Reusable packaging</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="practices" value="digital" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-700">Digital receipts</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Business License/Registration</label>
+                        <input type="file" name="license" accept=".pdf,.jpg,.jpeg,.png" 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" id="terms" required class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <label for="terms" class="ml-2 text-sm text-gray-600">
+                            I agree to the <a href="#" class="text-blue-600 hover:text-blue-700">Green Vendor Terms</a> and <a href="#" class="text-blue-600 hover:text-blue-700">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                        Register as Green Vendor
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Vendor Dashboard (Hidden initially) -->
+        <div id="dashboard-section" class="hidden">
+            <!-- Vendor Status Card -->
+            <div class="vendor-card rounded-xl p-8 text-white mb-8" data-aos="fade-up">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-2">Green Vendor Dashboard</h2>
+                        <p class="text-white opacity-90">Welcome to your vendor portal</p>
+                    </div>
+                    <div class="green-badge px-4 py-2 rounded-full">
+                        <span class="font-medium">Green Vendor</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                        <div class="text-2xl font-bold mb-1">4.8</div>
+                        <div class="text-sm opacity-90">Customer Rating</div>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                        <div class="text-2xl font-bold mb-1">156</div>
+                        <div class="text-sm opacity-90">BinCoin Redemptions</div>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                        <div class="text-2xl font-bold mb-1">89%</div>
+                        <div class="text-sm opacity-90">Waste Reduction</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Tabs -->
+            <div class="bg-white rounded-xl shadow-sm mb-8" data-aos="fade-up" data-aos-delay="100">
+                <div class="border-b border-gray-200">
+                    <nav class="flex space-x-8 px-6">
+                        <button onclick="switchTab('analytics')" id="analytics-tab" class="tab-active py-4 px-1 border-b-2 border-blue-500 font-medium text-sm">
+                            Analytics
+                        </button>
+                        <button onclick="switchTab('rewards')" id="rewards-tab" class="tab-inactive py-4 px-1 border-b-2 border-transparent font-medium text-sm">
+                            Rewards Management
+                        </button>
+                        <button onclick="switchTab('customers')" id="customers-tab" class="tab-inactive py-4 px-1 border-b-2 border-transparent font-medium text-sm">
+                            Customer Reviews
+                        </button>
+                        <button onclick="switchTab('settings')" id="settings-tab" class="tab-inactive py-4 px-1 border-b-2 border-transparent font-medium text-sm">
+                            Settings
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div id="analytics-content" class="p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">Redemption Trends</h3>
+                            <canvas id="redemptionChart" width="400" height="200"></canvas>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">Customer Demographics</h3>
+                            <canvas id="demographicsChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-600">Total Redemptions</span>
+                                <i data-feather="trending-up" class="h-4 w-4 text-green-600"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-gray-900">156</div>
+                            <div class="text-sm text-green-600">+12% this month</div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-600">Average Order Value</span>
+                                <i data-feather="dollar-sign" class="h-4 w-4 text-blue-600"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-gray-900">₹450</div>
+                            <div class="text-sm text-blue-600">+8% this month</div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-600">New Customers</span>
+                                <i data-feather="users" class="h-4 w-4 text-purple-600"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-gray-900">23</div>
+                            <div class="text-sm text-purple-600">+15% this month</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rewards Management Tab -->
+                <div id="rewards-content" class="p-6 hidden">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-gray-900">Manage Your Rewards</h3>
+                        <button onclick="openRewardModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            Add New Reward
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-medium text-gray-900">20% off on Coffee</h4>
+                                    <p class="text-sm text-gray-600">Cost: 25 BinCoins • Active</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-700 text-sm">Edit</button>
+                                    <button class="text-red-600 hover:text-red-700 text-sm">Deactivate</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Free Delivery</h4>
+                                    <p class="text-sm text-gray-600">Cost: 30 BinCoins • Active</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-700 text-sm">Edit</button>
+                                    <button class="text-red-600 hover:text-red-700 text-sm">Deactivate</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer Reviews Tab -->
+                <div id="customers-content" class="p-6 hidden">
+                    <h3 class="text-lg font-bold text-gray-900 mb-6">Customer Reviews</h3>
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=32&h=32&q=60" 
+                                         alt="Customer" class="w-8 h-8 rounded-full mr-3">
+                                    <div>
+                                        <p class="font-medium text-gray-900">John Doe</p>
+                                        <div class="flex items-center">
+                                            <div class="flex text-yellow-400">
+                                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                            </div>
+                                            <span class="ml-2 text-sm text-gray-600">5.0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="text-sm text-gray-500">2 days ago</span>
+                            </div>
+                            <p class="text-gray-700">Great coffee and love that they accept BinCoins! The eco-friendly approach is amazing.</p>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=32&h=32&q=60" 
+                                         alt="Customer" class="w-8 h-8 rounded-full mr-3">
+                                    <div>
+                                        <p class="font-medium text-gray-900">Jane Smith</p>
+                                        <div class="flex items-center">
+                                            <div class="flex text-yellow-400">
+                                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                            </div>
+                                            <span class="ml-2 text-sm text-gray-600">4.8</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="text-sm text-gray-500">1 week ago</span>
+                            </div>
+                            <p class="text-gray-700">Excellent service and the BinCoin rewards make it even better. Highly recommended!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div id="settings-content" class="p-6 hidden">
+                    <h3 class="text-lg font-bold text-gray-900 mb-6">Vendor Settings</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Business Name</label>
+                            <input type="text" value="Green Cafe" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Business Description</label>
+                            <textarea rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">We are committed to sustainable practices and eco-friendly operations.</textarea>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="font-medium text-gray-900">Email Notifications</h4>
+                                <p class="text-sm text-gray-600">Receive notifications about BinCoin redemptions</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                        <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Reward Modal -->
+    <div id="rewardModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-md w-full p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Add New Reward</h3>
+                <button onclick="closeRewardModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-feather="x" class="h-6 w-6"></i>
+                </button>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Reward Title</label>
+                    <input type="text" placeholder="e.g., 20% off on coffee" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">BinCoin Cost</label>
+                    <input type="number" placeholder="25" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <textarea rows="3" placeholder="Describe the reward..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                </div>
+                <div class="flex space-x-3">
+                    <button type="button" onclick="closeRewardModal()" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Add Reward
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize AOS and Feather icons
+        AOS.init({
+            duration: 600,
+            easing: 'ease-in-out',
+            once: true
+        });
+        feather.replace();
+
+        // Enforce vendor authentication
+        const vendorUser = JSON.parse(localStorage.getItem('vendorUser') || 'null');
+        if (!vendorUser) {
+            window.location.href = 'vendor-auth.html';
+        }
+
+        // Check if vendor is already registered
+        const vendorData = localStorage.getItem('vendorData');
+        if (vendorData) {
+            showDashboard();
+        }
+
+        // Logout handler
+        document.getElementById('vendor-logout').addEventListener('click', function() {
+            localStorage.removeItem('vendorUser');
+            // keep vendorData so they don't have to re-register next time
+            window.location.href = 'vendor-auth.html';
+        });
+
+        // Vendor registration form
+        document.getElementById('vendorForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const vendorInfo = {
+                businessName: formData.get('businessName'),
+                businessType: formData.get('businessType'),
+                address: formData.get('address'),
+                contactPerson: formData.get('contactPerson'),
+                phone: formData.get('phone'),
+                email: formData.get('email'),
+                description: formData.get('description'),
+                practices: formData.getAll('practices'),
+                registrationDate: new Date().toISOString(),
+                status: 'active'
+            };
+
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // Store vendor data
+            localStorage.setItem('vendorData', JSON.stringify(vendorInfo));
+            
+            // Show success message and dashboard
+            alert('Registration successful! Welcome to the Green Vendor Program.');
+            showDashboard();
+        });
+
+        function showDashboard() {
+            document.getElementById('registration-section').classList.add('hidden');
+            document.getElementById('dashboard-section').classList.remove('hidden');
+            
+            // Initialize charts
+            initCharts();
+        }
+
+        function switchTab(tabName) {
+            // Hide all content
+            document.querySelectorAll('[id$="-content"]').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('[id$="-tab"]').forEach(tab => {
+                tab.classList.remove('tab-active');
+                tab.classList.add('tab-inactive');
+            });
+            
+            // Show selected content and activate tab
+            document.getElementById(tabName + '-content').classList.remove('hidden');
+            document.getElementById(tabName + '-tab').classList.remove('tab-inactive');
+            document.getElementById(tabName + '-tab').classList.add('tab-active');
+        }
+
+        function initCharts() {
+            // Redemption Chart
+            const redemptionCtx = document.getElementById('redemptionChart').getContext('2d');
+            new Chart(redemptionCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'BinCoin Redemptions',
+                        data: [12, 19, 15, 25, 22, 30],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#f3f4f6'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Demographics Chart
+            const demographicsCtx = document.getElementById('demographicsChart').getContext('2d');
+            new Chart(demographicsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['18-25', '26-35', '36-45', '46+'],
+                    datasets: [{
+                        data: [30, 40, 20, 10],
+                        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        function openRewardModal() {
+            document.getElementById('rewardModal').classList.remove('hidden');
+        }
+
+        function closeRewardModal() {
+            document.getElementById('rewardModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
+

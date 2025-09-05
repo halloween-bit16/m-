@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Bin There</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+        }
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .sidebar-item {
+            transition: all 0.2s ease;
+        }
+        .sidebar-item:hover {
+            transform: translateX(4px);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .bincoin-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <div class="sidebar fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg">
+        <div class="flex items-center justify-center h-16 px-4 bg-emerald-600">
+            <i data-feather="trash-2" class="h-8 w-8 text-white"></i>
+            <span class="ml-2 text-xl font-bold text-white">Bin There</span>
+        </div>
+        
+        <nav class="mt-8 px-4">
+            <div class="space-y-2">
+                <a href="#dashboard" class="sidebar-item flex items-center px-4 py-3 text-emerald-600 bg-emerald-50 rounded-lg">
+                    <i data-feather="home" class="h-5 w-5"></i>
+                    <span class="ml-3 font-medium">Dashboard</span>
+                </a>
+                <a href="#reports" class="sidebar-item flex items-center px-4 py-3 text-gray-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg">
+                    <i data-feather="camera" class="h-5 w-5"></i>
+                    <span class="ml-3 font-medium">Report Waste</span>
+                </a>
+                <a href="#wallet" class="sidebar-item flex items-center px-4 py-3 text-gray-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg">
+                    <i data-feather="wallet" class="h-5 w-5"></i>
+                    <span class="ml-3 font-medium">BinCoin Wallet</span>
+                </a>
+                <a href="#map" class="sidebar-item flex items-center px-4 py-3 text-gray-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg">
+                    <i data-feather="map" class="h-5 w-5"></i>
+                    <span class="ml-3 font-medium">Live Map</span>
+                </a>
+                <a href="#leaderboard" class="sidebar-item flex items-center px-4 py-3 text-gray-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg">
+                    <i data-feather="award" class="h-5 w-5"></i>
+                    <span class="ml-3 font-medium">Leaderboard</span>
+                </a>
+                <a href="#profile" class="sidebar-item flex items-center px-4 py-3 text-gray-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg">
+                    <i data-feather="user" class="h-5 w-5"></i>
+                    <span class="ml-3 font-medium">Profile</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="absolute bottom-0 w-full p-4">
+            <button onclick="logout()" class="w-full flex items-center px-4 py-3 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                <i data-feather="log-out" class="h-5 w-5"></i>
+                <span class="ml-3 font-medium">Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-64">
+        <!-- Top Navigation -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+                        <p class="text-gray-600">Welcome back, <span id="user-name">User</span>!</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <!-- Notifications -->
+                        <button class="relative p-2 text-gray-400 hover:text-gray-600">
+                            <i data-feather="bell" class="h-6 w-6"></i>
+                            <span class="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
+                        </button>
+                        
+                        <!-- BinCoin Balance -->
+                        <div class="flex items-center bg-emerald-50 px-4 py-2 rounded-lg">
+                            <div class="bincoin-animation w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold mr-2">
+                                ♻️
+                            </div>
+                            <span class="font-bold text-emerald-600" id="bincoin-balance">0</span>
+                            <span class="text-emerald-600 ml-1">BinCoins</span>
+                        </div>
+                        
+                        <!-- User Avatar -->
+                        <div class="flex items-center">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=32&h=32&q=60" 
+                                 alt="User" class="h-8 w-8 rounded-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="p-6">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="card-hover bg-white rounded-xl shadow-sm p-6" data-aos="fade-up">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-blue-100 rounded-lg">
+                            <i data-feather="camera" class="h-6 w-6 text-blue-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Reports This Month</p>
+                            <p class="text-2xl font-bold text-gray-900" id="reports-count">12</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-hover bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-emerald-100 rounded-lg">
+                            <i data-feather="trending-up" class="h-6 w-6 text-emerald-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">BinCoins Earned</p>
+                            <p class="text-2xl font-bold text-gray-900" id="coins-earned">150</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-hover bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-yellow-100 rounded-lg">
+                            <i data-feather="award" class="h-6 w-6 text-yellow-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Rank</p>
+                            <p class="text-2xl font-bold text-gray-900">#23</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-hover bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-purple-100 rounded-lg">
+                            <i data-feather="users" class="h-6 w-6 text-purple-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Community Impact</p>
+                            <p class="text-2xl font-bold text-gray-900">89%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Recent Reports -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-bold text-gray-900">Recent Reports</h3>
+                            <button class="text-emerald-600 hover:text-emerald-700 font-medium">View All</button>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                                <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=60" 
+                                     alt="Waste report" class="w-16 h-16 rounded-lg object-cover">
+                                <div class="ml-4 flex-1">
+                                    <h4 class="font-medium text-gray-900">Plastic bottles near Central Park</h4>
+                                    <p class="text-sm text-gray-600">2 hours ago • +15 BinCoins</p>
+                                </div>
+                                <div class="flex items-center text-emerald-600">
+                                    <i data-feather="check-circle" class="h-5 w-5"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                                <img src="https://images.unsplash.com/photo-1581578731548-c6a0c3f2f6c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=60" 
+                                     alt="Waste report" class="w-16 h-16 rounded-lg object-cover">
+                                <div class="ml-4 flex-1">
+                                    <h4 class="font-medium text-gray-900">Food waste at College Street</h4>
+                                    <p class="text-sm text-gray-600">5 hours ago • +10 BinCoins</p>
+                                </div>
+                                <div class="flex items-center text-emerald-600">
+                                    <i data-feather="check-circle" class="h-5 w-5"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                                <img src="https://images.unsplash.com/photo-1609205603149-0a0b0b0b0b0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=60" 
+                                     alt="Waste report" class="w-16 h-16 rounded-lg object-cover">
+                                <div class="ml-4 flex-1">
+                                    <h4 class="font-medium text-gray-900">Cardboard boxes near Mall</h4>
+                                    <p class="text-sm text-gray-600">1 day ago • +8 BinCoins</p>
+                                </div>
+                                <div class="flex items-center text-emerald-600">
+                                    <i data-feather="check-circle" class="h-5 w-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions & Achievements -->
+                <div class="space-y-6">
+                    <!-- Quick Actions -->
+                    <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="100">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
+                        <div class="space-y-3">
+                            <button onclick="openReportModal()" class="w-full flex items-center justify-center px-4 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
+                                <i data-feather="camera" class="h-5 w-5 mr-2"></i>
+                                Report Waste
+                            </button>
+                            <button onclick="openWalletModal()" class="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                <i data-feather="wallet" class="h-5 w-5 mr-2"></i>
+                                View Wallet
+                            </button>
+                            <button onclick="openMapModal()" class="w-full flex items-center justify-center px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                                <i data-feather="map" class="h-5 w-5 mr-2"></i>
+                                View Map
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Achievements -->
+                    <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="200">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Recent Achievements</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                                    <i data-feather="award" class="h-6 w-6 text-yellow-600"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="font-medium text-gray-900">First Report</p>
+                                    <p class="text-sm text-gray-600">Reported your first waste</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                                    <i data-feather="trending-up" class="h-6 w-6 text-emerald-600"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="font-medium text-gray-900">Streak Master</p>
+                                    <p class="text-sm text-gray-600">7 days in a row</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <i data-feather="users" class="h-6 w-6 text-blue-600"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="font-medium text-gray-900">Community Helper</p>
+                                    <p class="text-sm text-gray-600">Helped 10+ people</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Chart -->
+            <div class="mt-8">
+                <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up">
+                    <h3 class="text-lg font-bold text-gray-900 mb-6">Weekly Activity</h3>
+                    <canvas id="activityChart" width="400" height="100"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Report Modal -->
+    <div id="reportModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-md w-full p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Report Waste</h3>
+                <button onclick="closeReportModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-feather="x" class="h-6 w-6"></i>
+                </button>
+            </div>
+            <form id="reportForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Waste Type</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                        <option>Plastic bottles</option>
+                        <option>Food waste</option>
+                        <option>Cardboard</option>
+                        <option>Glass</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                    <input type="text" placeholder="Enter location" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Photo</label>
+                    <input type="file" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <textarea rows="3" placeholder="Describe the waste situation..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"></textarea>
+                </div>
+                <div class="flex space-x-3">
+                    <button type="button" onclick="closeReportModal()" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit" class="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">
+                        Submit Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize AOS and Feather icons
+        AOS.init({
+            duration: 600,
+            easing: 'ease-in-out',
+            once: true
+        });
+        feather.replace();
+
+        // Load user data
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.email) {
+            window.location.href = 'auth.html';
+        }
+
+        // Update UI with user data
+        document.getElementById('user-name').textContent = user.name || 'User';
+        document.getElementById('bincoin-balance').textContent = user.binCoins || 0;
+
+        // Activity Chart
+        const ctx = document.getElementById('activityChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Reports',
+                    data: [2, 3, 1, 4, 2, 5, 3],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#f3f4f6'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Modal functions
+        function openReportModal() {
+            document.getElementById('reportModal').classList.remove('hidden');
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').classList.add('hidden');
+        }
+
+        function openWalletModal() {
+            window.location.href = 'wallet.html';
+        }
+
+        function openMapModal() {
+            window.location.href = 'map.html';
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'auth.html';
+        }
+
+        // Report form submission
+        document.getElementById('reportForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Update user's BinCoins
+            user.binCoins += 15;
+            localStorage.setItem('user', JSON.stringify(user));
+            document.getElementById('bincoin-balance').textContent = user.binCoins;
+            
+            // Update reports count
+            const reportsCount = parseInt(document.getElementById('reports-count').textContent) + 1;
+            document.getElementById('reports-count').textContent = reportsCount;
+            
+            closeReportModal();
+            alert('Report submitted successfully! You earned 15 BinCoins.');
+        });
+
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = item.getAttribute('href');
+                
+                // Remove active class from all items
+                document.querySelectorAll('.sidebar-item').forEach(i => {
+                    i.classList.remove('text-emerald-600', 'bg-emerald-50');
+                    i.classList.add('text-gray-600');
+                });
+                
+                // Add active class to clicked item
+                item.classList.add('text-emerald-600', 'bg-emerald-50');
+                item.classList.remove('text-gray-600');
+                
+                // Handle navigation
+                if (href === '#reports') {
+                    openReportModal();
+                } else if (href === '#wallet') {
+                    openWalletModal();
+                } else if (href === '#map') {
+                    openMapModal();
+                } else if (href === '#profile') {
+                    window.location.href = 'profile.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+

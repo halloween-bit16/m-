@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Map - Bin There</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+        }
+        #map {
+            height: 70vh;
+            width: 100%;
+            border-radius: 1rem;
+        }
+        .map-controls {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        .waste-marker {
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .waste-marker.plastic { background-color: #ef4444; }
+        .waste-marker.food { background-color: #f97316; }
+        .waste-marker.cardboard { background-color: #eab308; }
+        .waste-marker.glass { background-color: #22c55e; }
+        .waste-marker.other { background-color: #8b5cf6; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="dashboard.html" class="flex items-center">
+                        <i data-feather="arrow-left" class="h-6 w-6 text-gray-600"></i>
+                        <span class="ml-2 text-lg font-medium text-gray-900">Back to Dashboard</span>
+                    </a>
+                </div>
+                <div class="flex items-center">
+                    <i data-feather="trash-2" class="h-8 w-8 text-emerald-500"></i>
+                    <span class="ml-2 text-xl font-bold text-gray-900">Bin There</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Map Header -->
+        <div class="flex items-center justify-between mb-6" data-aos="fade-down">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Live Waste Map</h1>
+                <p class="text-gray-600">Real-time waste reports from the community</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center bg-emerald-50 px-4 py-2 rounded-lg">
+                    <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse mr-2"></div>
+                    <span class="text-emerald-600 font-medium">Live Updates</span>
+                </div>
+                <button onclick="openReportModal()" class="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition-colors">
+                    <i data-feather="camera" class="h-5 w-5 inline mr-2"></i>
+                    Report Waste
+                </button>
+            </div>
+        </div>
+
+        <!-- Map Controls -->
+        <div class="map-controls rounded-xl p-4 mb-6" data-aos="fade-up">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center space-x-6">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-4 h-4 bg-red-500 rounded-full"></div>
+                        <span class="text-sm font-medium">Plastic</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-4 h-4 bg-orange-500 rounded-full"></div>
+                        <span class="text-sm font-medium">Food Waste</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-4 h-4 bg-yellow-500 rounded-full"></div>
+                        <span class="text-sm font-medium">Cardboard</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-4 h-4 bg-green-500 rounded-full"></div>
+                        <span class="text-sm font-medium">Glass</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-4 h-4 bg-purple-500 rounded-full"></div>
+                        <span class="text-sm font-medium">Other</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <select id="timeFilter" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                    <button onclick="centerMap()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                        <i data-feather="navigation" class="h-4 w-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Container -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6" data-aos="fade-up" data-aos-delay="100">
+            <div id="map"></div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="flex items-center">
+                    <div class="p-3 bg-red-100 rounded-lg">
+                        <i data-feather="alert-triangle" class="h-6 w-6 text-red-600"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Active Reports</p>
+                        <p class="text-2xl font-bold text-gray-900" id="active-reports">47</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="flex items-center">
+                    <div class="p-3 bg-emerald-100 rounded-lg">
+                        <i data-feather="check-circle" class="h-6 w-6 text-emerald-600"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Resolved Today</p>
+                        <p class="text-2xl font-bold text-gray-900" id="resolved-today">23</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="flex items-center">
+                    <div class="p-3 bg-blue-100 rounded-lg">
+                        <i data-feather="users" class="h-6 w-6 text-blue-600"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Active Users</p>
+                        <p class="text-2xl font-bold text-gray-900" id="active-users">156</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="500">
+                <div class="flex items-center">
+                    <div class="p-3 bg-yellow-100 rounded-lg">
+                        <i data-feather="trending-up" class="h-6 w-6 text-yellow-600"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Reports Today</p>
+                        <p class="text-2xl font-bold text-gray-900" id="reports-today">12</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Reports -->
+        <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="600">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold text-gray-900">Recent Reports</h3>
+                <button class="text-emerald-600 hover:text-emerald-700 font-medium">View All</button>
+            </div>
+            <div class="space-y-4" id="recent-reports">
+                <!-- Reports will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div id="reportModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-md w-full p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Report Waste</h3>
+                <button onclick="closeReportModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-feather="x" class="h-6 w-6"></i>
+                </button>
+            </div>
+            <form id="reportForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Waste Type</label>
+                    <select id="wasteType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                        <option value="plastic">Plastic bottles</option>
+                        <option value="food">Food waste</option>
+                        <option value="cardboard">Cardboard</option>
+                        <option value="glass">Glass</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                    <input type="text" id="location" placeholder="Enter location" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Photo</label>
+                    <input type="file" id="photo" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <textarea id="description" rows="3" placeholder="Describe the waste situation..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"></textarea>
+                </div>
+                <div class="flex space-x-3">
+                    <button type="button" onclick="closeReportModal()" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit" class="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">
+                        Submit Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize AOS and Feather icons
+        AOS.init({
+            duration: 600,
+            easing: 'ease-in-out',
+            once: true
+        });
+        feather.replace();
+
+        // Check authentication
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.email) {
+            window.location.href = 'auth.html';
+        }
+
+        // Initialize map
+        let map;
+        let markers = [];
+        
+        function initMap() {
+            // Default to a city center (you can change this to your city)
+            map = L.map('map').setView([28.6139, 77.2090], 13); // Delhi coordinates
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add sample waste reports
+            addSampleReports();
+            
+            // Update map every 30 seconds
+            setInterval(updateMap, 30000);
+        }
+
+        function addSampleReports() {
+            const sampleReports = [
+                {
+                    id: 1,
+                    lat: 28.6139,
+                    lng: 77.2090,
+                    type: 'plastic',
+                    title: 'Plastic bottles near Central Park',
+                    description: 'Multiple plastic bottles scattered around the park entrance',
+                    time: '2 hours ago',
+                    coins: 15,
+                    status: 'active'
+                },
+                {
+                    id: 2,
+                    lat: 28.6149,
+                    lng: 77.2100,
+                    type: 'food',
+                    title: 'Food waste at College Street',
+                    description: 'Leftover food containers near the college gate',
+                    time: '5 hours ago',
+                    coins: 10,
+                    status: 'active'
+                },
+                {
+                    id: 3,
+                    lat: 28.6129,
+                    lng: 77.2080,
+                    type: 'cardboard',
+                    title: 'Cardboard boxes near Mall',
+                    description: 'Large cardboard boxes blocking the sidewalk',
+                    time: '1 day ago',
+                    coins: 8,
+                    status: 'resolved'
+                },
+                {
+                    id: 4,
+                    lat: 28.6159,
+                    lng: 77.2110,
+                    type: 'glass',
+                    title: 'Broken glass near Market',
+                    description: 'Broken glass bottles on the road',
+                    time: '3 hours ago',
+                    coins: 12,
+                    status: 'active'
+                },
+                {
+                    id: 5,
+                    lat: 28.6119,
+                    lng: 77.2070,
+                    type: 'other',
+                    title: 'Mixed waste at Station',
+                    description: 'Various types of waste near the metro station',
+                    time: '6 hours ago',
+                    coins: 20,
+                    status: 'active'
+                }
+            ];
+
+            sampleReports.forEach(report => {
+                addMarker(report);
+            });
+
+            updateRecentReports(sampleReports);
+        }
+
+        function addMarker(report) {
+            const marker = L.circleMarker([report.lat, report.lng], {
+                radius: 12,
+                fillColor: getColorForType(report.type),
+                color: 'white',
+                weight: 3,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+
+            marker.bindPopup(`
+                <div class="p-2">
+                    <h4 class="font-bold text-gray-900 mb-1">${report.title}</h4>
+                    <p class="text-sm text-gray-600 mb-2">${report.description}</p>
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="text-gray-500">${report.time}</span>
+                        <span class="bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full">+${report.coins} BinCoins</span>
+                    </div>
+                </div>
+            `);
+
+            markers.push({ marker, report });
+        }
+
+        function getColorForType(type) {
+            const colors = {
+                plastic: '#ef4444',
+                food: '#f97316',
+                cardboard: '#eab308',
+                glass: '#22c55e',
+                other: '#8b5cf6'
+            };
+            return colors[type] || '#6b7280';
+        }
+
+        function updateRecentReports(reports) {
+            const container = document.getElementById('recent-reports');
+            container.innerHTML = '';
+
+            reports.slice(0, 5).forEach(report => {
+                const reportElement = document.createElement('div');
+                reportElement.className = 'flex items-center p-4 bg-gray-50 rounded-lg';
+                reportElement.innerHTML = `
+                    <div class="w-4 h-4 rounded-full mr-3" style="background-color: ${getColorForType(report.type)}"></div>
+                    <div class="flex-1">
+                        <h4 class="font-medium text-gray-900">${report.title}</h4>
+                        <p class="text-sm text-gray-600">${report.time} • +${report.coins} BinCoins</p>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-xs px-2 py-1 rounded-full ${report.status === 'active' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">
+                            ${report.status}
+                        </span>
+                    </div>
+                `;
+                container.appendChild(reportElement);
+            });
+        }
+
+        function centerMap() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    map.setView([position.coords.latitude, position.coords.longitude], 15);
+                });
+            } else {
+                map.setView([28.6139, 77.2090], 13);
+            }
+        }
+
+        function updateMap() {
+            // Simulate new reports
+            const newReport = {
+                id: Date.now(),
+                lat: 28.6139 + (Math.random() - 0.5) * 0.01,
+                lng: 77.2090 + (Math.random() - 0.5) * 0.01,
+                type: ['plastic', 'food', 'cardboard', 'glass', 'other'][Math.floor(Math.random() * 5)],
+                title: 'New waste report',
+                description: 'Recently reported waste in the area',
+                time: 'Just now',
+                coins: Math.floor(Math.random() * 20) + 5,
+                status: 'active'
+            };
+
+            addMarker(newReport);
+            
+            // Update statistics
+            document.getElementById('active-reports').textContent = parseInt(document.getElementById('active-reports').textContent) + 1;
+            document.getElementById('reports-today').textContent = parseInt(document.getElementById('reports-today').textContent) + 1;
+        }
+
+        // Modal functions
+        function openReportModal() {
+            document.getElementById('reportModal').classList.remove('hidden');
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').classList.add('hidden');
+        }
+
+        // Report form submission
+        document.getElementById('reportForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const wasteType = formData.get('wasteType');
+            const location = formData.get('location');
+            const description = formData.get('description');
+            
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Add new report to map
+            const newReport = {
+                id: Date.now(),
+                lat: 28.6139 + (Math.random() - 0.5) * 0.01,
+                lng: 77.2090 + (Math.random() - 0.5) * 0.01,
+                type: wasteType,
+                title: `${wasteType.charAt(0).toUpperCase() + wasteType.slice(1)} waste at ${location}`,
+                description: description,
+                time: 'Just now',
+                coins: Math.floor(Math.random() * 20) + 5,
+                status: 'active'
+            };
+
+            addMarker(newReport);
+            
+            // Update user's BinCoins
+            user.binCoins += newReport.coins;
+            localStorage.setItem('user', JSON.stringify(user));
+            
+            // Update statistics
+            document.getElementById('active-reports').textContent = parseInt(document.getElementById('active-reports').textContent) + 1;
+            document.getElementById('reports-today').textContent = parseInt(document.getElementById('reports-today').textContent) + 1;
+            
+            closeReportModal();
+            alert(`Report submitted successfully! You earned ${newReport.coins} BinCoins.`);
+        });
+
+        // Time filter
+        document.getElementById('timeFilter').addEventListener('change', function() {
+            const filter = this.value;
+            // Filter markers based on time
+            markers.forEach(({ marker, report }) => {
+                // Simple filtering logic - in real app, you'd filter by actual timestamps
+                if (filter === 'today') {
+                    marker.setOpacity(report.time.includes('hours ago') || report.time.includes('Just now') ? 1 : 0.3);
+                } else if (filter === 'week') {
+                    marker.setOpacity(report.time.includes('day ago') ? 0.3 : 1);
+                } else {
+                    marker.setOpacity(1);
+                }
+            });
+        });
+
+        // Initialize map when page loads
+        initMap();
+    </script>
+</body>
+</html>
+
+

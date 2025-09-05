@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bin There - Authentication</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #10b981 0%, #000000 50%, #10b981 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+            color: #ffffff;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .auth-container {
+            backdrop-filter: blur(15px);
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .form-input {
+            transition: all 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #ffffff;
+        }
+        
+        .form-input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            border-color: rgba(16, 185, 129, 0.6);
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #10b981, #059669);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(45deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .tab-button:not(.active) {
+            background-color: rgba(0, 0, 0, 0.4);
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .tab-button:not(.active):hover {
+            background-color: rgba(0, 0, 0, 0.6);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .text-glow {
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+        
+        .success-message {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #6ee7b7;
+        }
+        
+        
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <!-- Logo and Title -->
+        <div class="text-center mb-8" data-aos="fade-down">
+            <div class="flex items-center justify-center mb-4">
+                <i data-feather="trash-2" class="h-12 w-12 text-emerald-500 text-glow"></i>
+                <span class="ml-3 text-3xl font-bold text-white text-glow">Bin There</span>
+            </div>
+            <p class="text-white opacity-90">Making the Invisible Visible</p>
+        </div>
+
+        <!-- Auth Container -->
+        <div class="auth-container rounded-2xl shadow-2xl p-8" data-aos="fade-up">
+            <!-- Alert Messages -->
+            <div id="alert-container" class="mb-6"></div>
+            
+            <!-- Tab Navigation -->
+            <div class="flex mb-8 bg-black bg-opacity-40 rounded-lg p-1 border border-emerald-500 border-opacity-20">
+                <button id="signin-tab" class="tab-button flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 active">
+                    Sign In
+                </button>
+                <button id="signup-tab" class="tab-button flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200">
+                    Sign Up
+                </button>
+            </div>
+
+            <!-- Sign In Form -->
+            <form id="signin-form" class="space-y-6">
+                <div>
+                    <label for="signin-email" class="block text-sm font-medium text-emerald-400 mb-2">Email</label>
+                    <input type="email" id="signin-email" name="email" required 
+                           class="form-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                           placeholder="Enter your email">
+                </div>
+                <div>
+                    <label for="signin-password" class="block text-sm font-medium text-emerald-400 mb-2">Password</label>
+                    <input type="password" id="signin-password" name="password" required 
+                           class="form-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                           placeholder="Enter your password">
+                </div>
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="rounded border-emerald-500 text-emerald-600 focus:ring-emerald-500 bg-black">
+                        <span class="ml-2 text-sm text-gray-300">Remember me</span>
+                    </label>
+                    <a href="#" class="text-sm text-emerald-400 hover:text-emerald-300 transition-colors duration-300">Forgot password?</a>
+                </div>
+                <button type="submit" id="signin-btn" class="btn-primary w-full text-white py-3 rounded-lg font-medium">
+                    <span id="signin-btn-text">Sign In</span>
+                    <span id="signin-btn-loading" class="loading-spinner hidden"></span>
+                </button>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form id="signup-form" class="space-y-6 hidden">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="signup-firstname" class="block text-sm font-medium text-emerald-400 mb-2">First Name</label>
+                        <input type="text" id="signup-firstname" name="firstname" required 
+                               class="form-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                               placeholder="First name">
+                    </div>
+                    <div>
+                        <label for="signup-lastname" class="block text-sm font-medium text-emerald-400 mb-2">Last Name</label>
+                        <input type="text" id="signup-lastname" name="lastname" required 
+                               class="form-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                               placeholder="Last name">
+                    </div>
+                </div>
+                <div>
+                    <label for="signup-email" class="block text-sm font-medium text-emerald-400 mb-2">Email</label>
+                    <input type="email" id="signup-email" name="email" required 
+                           class="form-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                           placeholder="Enter your email">
+                </div>
+                <div>
+                    <label for="signup-phone" class="block text-sm font-medium text-emerald-400 mb-2">Phone Number</label>
+                    <input type="tel" id="signup-phone" name="phone" required 
+                           class="form-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                           placeholder="Enter your phone number">
+                </div>
+                <div>
+                    <label for="signup-role" class="block text-sm font-medium text-emerald-400 mb-2">I am a...</label>
+                    <select id="signup-role" name="role" required 
+                            class="form-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                        <option value="">Select your role</option>
+                        <option value="citizen">Citizen</option>
+                        <option value="vendor">Vendor/Business Owner</option>
+                        <option value="municipal">Municipal Official</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="signup-password" class="block text-sm font-medium text-emerald-400 mb-2">Password</label>
+                    <input type="password" id="signup-password" name="password" required 
+                           class="form-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                           placeholder="Create a password">
+                </div>
+                <div>
+                    <label for="signup-confirm-password" class="block text-sm font-medium text-emerald-400 mb-2">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" name="confirmPassword" required 
+                           class="form-input w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                           placeholder="Confirm your password">
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="terms" required class="rounded border-emerald-500 text-emerald-600 focus:ring-emerald-500 bg-black">
+                    <label for="terms" class="ml-2 text-sm text-gray-300">
+                        I agree to the <a href="#" class="text-emerald-400 hover:text-emerald-300 transition-colors duration-300">Terms of Service</a> and <a href="#" class="text-emerald-400 hover:text-emerald-300 transition-colors duration-300">Privacy Policy</a>
+                    </label>
+                </div>
+                <button type="submit" id="signup-btn" class="btn-primary w-full text-white py-3 rounded-lg font-medium">
+                    <span id="signup-btn-text">Create Account</span>
+                    <span id="signup-btn-loading" class="loading-spinner hidden"></span>
+                </button>
+            </form>
+
+            <!-- Additional Options -->
+            <div class="mt-6 text-center text-sm text-gray-300">
+                Are you a vendor? <a href="vendor-auth.html" class="text-emerald-400 hover:text-emerald-300 font-medium transition-colors duration-300">Sign in / Sign up here</a>
+            </div>
+        </div>
+
+        <!-- Back to Home -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="text-white opacity-90 hover:opacity-100 transition-opacity duration-200">
+                <i data-feather="arrow-left" class="inline w-4 h-4 mr-2"></i>
+                Back to Home
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Simplified Authentication - Email Only
+        // Using localStorage for demo purposes
+        console.log('Using simplified email-only authentication');
+
+        // Initialize AOS and Feather icons
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-out-cubic',
+            once: true
+        });
+        feather.replace();
+
+        // Utility functions
+        function showAlert(message, type = 'error') {
+            const alertContainer = document.getElementById('alert-container');
+            const alertClass = type === 'error' ? 'error-message' : 'success-message';
+            
+            alertContainer.innerHTML = `
+                <div class="${alertClass} p-4 rounded-lg text-sm">
+                    ${message}
+                </div>
+            `;
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 5000);
+        }
+
+        function setLoading(buttonId, isLoading) {
+            const button = document.getElementById(buttonId);
+            const text = document.getElementById(buttonId.replace('-btn', '-btn-text'));
+            const loading = document.getElementById(buttonId.replace('-btn', '-btn-loading'));
+            
+            if (isLoading) {
+                button.disabled = true;
+                text.classList.add('hidden');
+                loading.classList.remove('hidden');
+            } else {
+                button.disabled = false;
+                text.classList.remove('hidden');
+                loading.classList.add('hidden');
+            }
+        }
+
+        // Tab switching functionality
+        const signinTab = document.getElementById('signin-tab');
+        const signupTab = document.getElementById('signup-tab');
+        const signinForm = document.getElementById('signin-form');
+        const signupForm = document.getElementById('signup-form');
+
+        function switchTab(activeTab) {
+            // Reset all tabs
+            [signinTab, signupTab].forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Set active tab
+            activeTab.classList.add('active');
+            
+            // Show/hide forms
+            if (activeTab === signinTab) {
+                signinForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+            } else {
+                signupForm.classList.remove('hidden');
+                signinForm.classList.add('hidden');
+            }
+        }
+
+        signinTab.addEventListener('click', () => switchTab(signinTab));
+        signupTab.addEventListener('click', () => switchTab(signupTab));
+
+        // Sign In Form Handler
+        signinForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            setLoading('signin-btn', true);
+            
+            const formData = new FormData(signinForm);
+            const email = formData.get('email');
+            const password = formData.get('password');
+
+            try {
+                // Simulate API call delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // Check if user exists in localStorage (demo)
+                const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = existingUsers.find(u => u.email === email && u.password === password);
+
+                if (!user) {
+                    showAlert('Invalid email or password. Please try again.');
+                    return;
+                }
+
+                // Store current user session
+                localStorage.setItem('user', JSON.stringify({
+                    id: user.id,
+                    email: user.email,
+                    name: user.name,
+                    role: user.role,
+                    binCoins: user.binCoins,
+                    joinDate: user.joinDate
+                }));
+
+                showAlert('Welcome back! Redirecting to dashboard...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+
+            } catch (error) {
+                showAlert('An unexpected error occurred. Please try again.');
+                console.error('Sign in error:', error);
+            } finally {
+                setLoading('signin-btn', false);
+            }
+        });
+
+        // Sign Up Form Handler
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            setLoading('signup-btn', true);
+            
+            const formData = new FormData(signupForm);
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirmPassword');
+            
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match!');
+                setLoading('signup-btn', false);
+                return;
+            }
+
+            if (password.length < 6) {
+                showAlert('Password must be at least 6 characters long!');
+                setLoading('signup-btn', false);
+                return;
+            }
+
+            const userData = {
+                email: formData.get('email'),
+                password: password,
+                firstName: formData.get('firstname'),
+                lastName: formData.get('lastname'),
+                phone: formData.get('phone'),
+                role: formData.get('role')
+            };
+
+            try {
+                // Simulate API call delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // Check if user already exists
+                const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
+                const existingUser = existingUsers.find(u => u.email === userData.email);
+
+                if (existingUser) {
+                    showAlert('An account with this email already exists. Please sign in instead.');
+                    return;
+                }
+
+                // Create new user
+                const newUser = {
+                    id: Date.now().toString(), // Simple ID generation
+                    email: userData.email,
+                    password: userData.password, // In real app, this would be hashed
+                    name: `${userData.firstName} ${userData.lastName}`,
+                    role: userData.role,
+                    phone: userData.phone,
+                    binCoins: 50, // Welcome bonus
+                    joinDate: new Date().toISOString()
+                };
+
+                // Save user to localStorage
+                existingUsers.push(newUser);
+                localStorage.setItem('users', JSON.stringify(existingUsers));
+
+                // Store current user session
+                localStorage.setItem('user', JSON.stringify({
+                    id: newUser.id,
+                    email: newUser.email,
+                    name: newUser.name,
+                    role: newUser.role,
+                    binCoins: newUser.binCoins,
+                    joinDate: newUser.joinDate
+                }));
+
+                showAlert('Account created successfully! Welcome to Bin There!', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'redirect.html';
+                }, 1500);
+
+            } catch (error) {
+                showAlert('An unexpected error occurred. Please try again.');
+                console.error('Sign up error:', error);
+            } finally {
+                setLoading('signup-btn', false);
+            }
+        });
+
+        // Check if user is already logged in
+        function checkAuth() {
+            const user = localStorage.getItem('user');
+            if (user) {
+                window.location.href = 'dashboard.html';
+            }
+        }
+
+        // Initialize auth check
+        checkAuth();
+    </script>
+</body>
+</html>
+
