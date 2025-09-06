@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,92 +13,141 @@
     <script src="https://cdn.jsdelivr.net/npm/animejs/lib/anime.iife.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
+
         * {
             scroll-behavior: smooth;
         }
-        
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #000000;
             color: #ffffff;
             overflow-x: hidden;
         }
-        
+
         .hero-gradient {
             background: linear-gradient(135deg, #10b981 0%, #000000 50%, #10b981 100%);
             background-size: 300% 300%;
             animation: gradientShift 12s ease-in-out infinite;
         }
-        
+
         @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            25% { background-position: 100% 25%; }
-            50% { background-position: 50% 100%; }
-            75% { background-position: 0% 75%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            25% {
+                background-position: 100% 25%;
+            }
+
+            50% {
+                background-position: 50% 100%;
+            }
+
+            75% {
+                background-position: 0% 75%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
-        
+
         .eco-coin {
             box-shadow: 0 0 40px rgba(16, 185, 129, 0.9);
             animation: pulse 2.5s ease-in-out infinite, float 4s ease-in-out infinite, glow 3s ease-in-out infinite;
         }
-        
+
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
-        
+
         @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            25% { transform: translateY(-8px) rotate(1deg); }
-            50% { transform: translateY(-12px) rotate(0deg); }
-            75% { transform: translateY(-8px) rotate(-1deg); }
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            25% {
+                transform: translateY(-8px) rotate(1deg);
+            }
+
+            50% {
+                transform: translateY(-12px) rotate(0deg);
+            }
+
+            75% {
+                transform: translateY(-8px) rotate(-1deg);
+            }
         }
-        
+
         @keyframes glow {
-            0%, 100% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.9); }
-            50% { box-shadow: 0 0 60px rgba(16, 185, 129, 1), 0 0 80px rgba(16, 185, 129, 0.5); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 40px rgba(16, 185, 129, 0.9);
+            }
+
+            50% {
+                box-shadow: 0 0 60px rgba(16, 185, 129, 1), 0 0 80px rgba(16, 185, 129, 0.5);
+            }
         }
-        
+
         .heatmap {
             background: linear-gradient(to right, #ef4444, #f97316, #eab308, #10b981);
             animation: heatmapPulse 4s ease-in-out infinite;
         }
-        
+
         @keyframes heatmapPulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
+
+            0%,
+            100% {
+                opacity: 0.8;
+            }
+
+            50% {
+                opacity: 1;
+            }
         }
-        
+
         .dashboard-card {
             backdrop-filter: blur(15px);
             background-color: rgba(0, 0, 0, 0.7);
             border: 1px solid rgba(16, 185, 129, 0.2);
             transition: all 0.3s ease;
         }
-        
+
         .dashboard-card:hover {
             background-color: rgba(0, 0, 0, 0.8);
             border-color: rgba(16, 185, 129, 0.4);
             transform: translateY(-5px);
         }
-        
+
         .card-hover {
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        
+
         .card-hover:hover {
             transform: translateY(-12px) scale(1.03);
             box-shadow: 0 25px 50px rgba(16, 185, 129, 0.25), 0 0 30px rgba(16, 185, 129, 0.1);
         }
-        
+
         .nav-link {
             position: relative;
             transition: all 0.3s ease;
         }
-        
+
         .nav-link::after {
             content: '';
             position: absolute;
@@ -108,18 +158,18 @@
             background-color: #10b981;
             transition: width 0.3s ease;
         }
-        
+
         .nav-link:hover::after {
             width: 100%;
         }
-        
+
         .btn-primary {
             background: linear-gradient(45deg, #10b981, #059669);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
-        
+
         .btn-primary::before {
             content: '';
             position: absolute;
@@ -127,63 +177,80 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: left 0.5s;
         }
-        
+
         .btn-primary:hover::before {
             left: 100%;
         }
-        
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
         }
-        
+
         .section-bg {
             background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%);
         }
-        
+
         .text-glow {
             text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
         }
-        
+
         .loading-dots {
             display: inline-block;
         }
-        
+
         .loading-dots::after {
             content: '';
             animation: dots 1.5s steps(4, end) infinite;
         }
-        
+
         @keyframes dots {
-            0%, 20% { content: ''; }
-            40% { content: '.'; }
-            60% { content: '..'; }
-            80%, 100% { content: '...'; }
+
+            0%,
+            20% {
+                content: '';
+            }
+
+            40% {
+                content: '.';
+            }
+
+            60% {
+                content: '..';
+            }
+
+            80%,
+            100% {
+                content: '...';
+            }
         }
-        
+
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.6s ease;
         }
-        
+
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
-        
+
         .parallax-bg {
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
         }
-        
+
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
+
+            *,
+            *::before,
+            *::after {
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
@@ -191,9 +258,11 @@
         }
     </style>
 </head>
+
 <body class="overflow-x-hidden">
     <!-- Navigation -->
-    <nav class="bg-black bg-opacity-90 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-emerald-500 border-opacity-20">
+    <nav
+        class="bg-black bg-opacity-90 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-emerald-500 border-opacity-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
@@ -204,13 +273,17 @@
                 </div>
                 <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
                     <a href="#" class="nav-link text-emerald-400 font-medium">Home</a>
-                    <a href="#how-it-works" class="nav-link text-gray-300 hover:text-emerald-400 font-medium">How It Works</a>
+                    <a href="#how-it-works" class="nav-link text-gray-300 hover:text-emerald-400 font-medium">How It
+                        Works</a>
                     <a href="#benefits" class="nav-link text-gray-300 hover:text-emerald-400 font-medium">Benefits</a>
                     <a href="#dashboard" class="nav-link text-gray-300 hover:text-emerald-400 font-medium">Dashboard</a>
-                    <a href="auth.html" class="ml-8 btn-primary inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white">Join Now</a>
+                    <a href="auth.html"
+                        class="ml-8 btn-primary inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white">Join
+                        Now</a>
                 </div>
                 <div class="-mr-2 flex items-center md:hidden">
-                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-emerald-400 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-emerald-500 transition-all duration-300">
+                    <button type="button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-emerald-400 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-emerald-500 transition-all duration-300">
                         <i data-feather="menu" class="h-6 w-6"></i>
                     </button>
                 </div>
@@ -224,18 +297,27 @@
         <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 md:py-40 relative z-10">
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div data-aos="fade-right" data-aos-duration="1200">
-                    <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-8 text-glow">Making the Invisible <span class="underline decoration-emerald-400 text-emerald-300">Visible</span></h1>
-                    <p class="text-xl md:text-2xl mb-10 opacity-90 fade-in leading-relaxed">BinCoin transforms urban waste management through gamification, blockchain, and AI-powered insights for a cleaner, smarter city.</p>
+                    <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-8 text-glow">Making the Invisible <span
+                            class="underline decoration-emerald-400 text-emerald-300">Visible</span></h1>
+                    <p class="text-xl md:text-2xl mb-10 opacity-90 fade-in leading-relaxed">BinCoin transforms urban
+                        waste management through gamification, blockchain, and AI-powered insights for a cleaner,
+                        smarter city.</p>
                     <div class="flex flex-col sm:flex-row gap-6">
-                        <a href="auth.html" class="btn-primary bg-emerald-600 text-white hover:bg-emerald-700 px-8 py-4 rounded-xl font-semibold text-center text-lg">Get Started</a>
-                        <a href="#how-it-works" class="border-2 border-emerald-400 text-white hover:bg-emerald-400 hover:text-black px-8 py-4 rounded-xl font-semibold text-center transition-all duration-300 text-lg">Learn More</a>
+                        <a href="auth.html"
+                            class="btn-primary bg-emerald-600 text-white hover:bg-emerald-700 px-8 py-4 rounded-xl font-semibold text-center text-lg">Get
+                            Started</a>
+                        <a href="#how-it-works"
+                            class="border-2 border-emerald-400 text-white hover:bg-emerald-400 hover:text-black px-8 py-4 rounded-xl font-semibold text-center transition-all duration-300 text-lg">Learn
+                            More</a>
                     </div>
                 </div>
                 <div data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200" class="relative">
-                    <div class="bg-black bg-opacity-80 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-emerald-500 border-opacity-30 card-hover">
+                    <div
+                        class="bg-black bg-opacity-80 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-emerald-500 border-opacity-30 card-hover">
                         <div class="flex justify-between items-center mb-4">
                             <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center">
                                     <i data-feather="trash-2" class="text-emerald-400"></i>
                                 </div>
                                 <div class="ml-3">
@@ -243,18 +325,24 @@
                                     <p class="text-sm text-gray-400">@clean_city_hero</p>
                                 </div>
                             </div>
-                            <div class="text-xs bg-emerald-500 bg-opacity-20 text-emerald-300 px-2 py-1 rounded-full border border-emerald-500 border-opacity-30">+25 BinCoins</div>
+                            <div
+                                class="text-xs bg-emerald-500 bg-opacity-20 text-emerald-300 px-2 py-1 rounded-full border border-emerald-500 border-opacity-30">
+                                +25 BinCoins</div>
                         </div>
-                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Waste report" class="rounded-lg mb-4">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                            alt="Waste report" class="rounded-lg mb-4">
                         <div class="flex justify-between items-center">
                             <div class="flex space-x-2">
-                                <div class="w-8 h-8 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition-all duration-300">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition-all duration-300">
                                     <i data-feather="map-pin" class="text-emerald-400 w-4"></i>
                                 </div>
-                                <div class="w-8 h-8 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition-all duration-300">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition-all duration-300">
                                     <i data-feather="tag" class="text-emerald-400 w-4"></i>
                                 </div>
-                                <div class="w-8 h-8 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition-all duration-300">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition-all duration-300">
                                     <i data-feather="share-2" class="text-emerald-400 w-4"></i>
                                 </div>
                             </div>
@@ -264,7 +352,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="eco-coin absolute -top-6 -right-6 w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
+                    <div
+                        class="eco-coin absolute -top-6 -right-6 w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
                         ♻️
                     </div>
                 </div>
@@ -277,44 +366,54 @@
         <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div class="text-center mb-20" data-aos="fade-up" data-aos-duration="1200">
                 <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 text-glow">The Invisible Waste Problem</h2>
-                <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">Street vendors, festivals, and temporary markets generate massive waste that's rarely tracked in official records.</p>
+                <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">Street vendors,
+                    festivals, and temporary markets generate massive waste that's rarely tracked in official records.
+                </p>
             </div>
-            
+
             <div class="grid md:grid-cols-4 gap-10">
-                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-2xl border border-emerald-500 border-opacity-20 card-hover" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-4">
+                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-2xl border border-emerald-500 border-opacity-20 card-hover"
+                    data-aos="fade-up" data-aos-delay="100">
+                    <div
+                        class="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-4">
                         <i data-feather="coffee" class="text-emerald-400"></i>
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-white">Street Food Vendors</h3>
                     <p class="text-gray-300">Thousands of disposable cups and plates left behind daily.</p>
                 </div>
-                
-                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-2xl border border-emerald-500 border-opacity-20 card-hover" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-4">
+
+                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-2xl border border-emerald-500 border-opacity-20 card-hover"
+                    data-aos="fade-up" data-aos-delay="200">
+                    <div
+                        class="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-4">
                         <i data-feather="music" class="text-emerald-400"></i>
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-white">College Festivals</h3>
                     <p class="text-gray-300">Heaps of plastic waste after concerts and events.</p>
                 </div>
-                
-                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-2xl border border-emerald-500 border-opacity-20 card-hover" data-aos="fade-up" data-aos-delay="300">
-                    <div class="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-4">
+
+                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-2xl border border-emerald-500 border-opacity-20 card-hover"
+                    data-aos="fade-up" data-aos-delay="300">
+                    <div
+                        class="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-4">
                         <i data-feather="home" class="text-emerald-400"></i>
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-white">Home Businesses</h3>
                     <p class="text-gray-300">Packaging waste from small-scale home enterprises.</p>
                 </div>
-                
-                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-2xl border border-emerald-500 border-opacity-20 card-hover" data-aos="fade-up" data-aos-delay="400">
-                    <div class="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-4">
+
+                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-2xl border border-emerald-500 border-opacity-20 card-hover"
+                    data-aos="fade-up" data-aos-delay="400">
+                    <div
+                        class="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-4">
                         <i data-feather="shopping-bag" class="text-emerald-400"></i>
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-white">Temporary Bazaars</h3>
                     <p class="text-gray-300">Scattered trash after weekend markets and fairs.</p>
                 </div>
             </div>
-            
-            
+
+
         </div>
     </section>
 
@@ -323,55 +422,70 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
                 <h2 class="text-3xl font-bold text-white mb-4 text-glow">How BinCoin Works</h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">A simple, gamified system that makes waste management visible and rewarding for everyone.</p>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">A simple, gamified system that makes waste management
+                    visible and rewarding for everyone.</p>
             </div>
-            
+
             <div class="grid md:grid-cols-3 gap-8 mb-16">
-                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-xl border border-emerald-500 border-opacity-20 card-hover" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-16 h-16 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-xl border border-emerald-500 border-opacity-20 card-hover"
+                    data-aos="fade-up" data-aos-delay="100">
+                    <div
+                        class="w-16 h-16 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-6 mx-auto">
                         <span class="text-emerald-400 font-bold text-xl">1</span>
                     </div>
                     <h3 class="font-bold text-xl text-center mb-4 text-white">Report Waste</h3>
-                    <p class="text-gray-300 text-center">Citizens snap photos of waste via our app or WhatsApp bot. Reports appear instantly on our live map.</p>
+                    <p class="text-gray-300 text-center">Citizens snap photos of waste via our app or WhatsApp bot.
+                        Reports appear instantly on our live map.</p>
                     <div class="mt-6 flex justify-center">
-                        <div class="w-12 h-12 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition-all duration-300">
                             <i data-feather="camera" class="text-emerald-400"></i>
                         </div>
                     </div>
                 </div>
-                
-                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-xl border border-emerald-500 border-opacity-20 card-hover" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-16 h-16 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-6 mx-auto">
+
+                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-xl border border-emerald-500 border-opacity-20 card-hover"
+                    data-aos="fade-up" data-aos-delay="200">
+                    <div
+                        class="w-16 h-16 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-6 mx-auto">
                         <span class="text-emerald-400 font-bold text-xl">2</span>
                     </div>
                     <h3 class="font-bold text-xl text-center mb-4 text-white">Earn BinCoins</h3>
-                    <p class="text-gray-300 text-center">Verified reports earn you BinCoins - our eco-reward tokens that can be redeemed for real benefits.</p>
+                    <p class="text-gray-300 text-center">Verified reports earn you BinCoins - our eco-reward tokens that
+                        can be redeemed for real benefits.</p>
                     <div class="mt-6 flex justify-center">
-                        <div class="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                        <div
+                            class="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center">
                             <i data-feather="award" class="text-emerald-400"></i>
                         </div>
                     </div>
                 </div>
-                
-                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-xl border border-emerald-500 border-opacity-20 card-hover" data-aos="fade-up" data-aos-delay="300">
-                    <div class="w-16 h-16 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-6 mx-auto">
+
+                <div class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-xl border border-emerald-500 border-opacity-20 card-hover"
+                    data-aos="fade-up" data-aos-delay="300">
+                    <div
+                        class="w-16 h-16 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mb-6 mx-auto">
                         <span class="text-emerald-400 font-bold text-xl">3</span>
                     </div>
                     <h3 class="font-bold text-xl text-center mb-4 text-white">Redeem Rewards</h3>
-                    <p class="text-gray-300 text-center">Use your BinCoins at participating vendors, for municipal services, or in community challenges.</p>
+                    <p class="text-gray-300 text-center">Use your BinCoins at participating vendors, for municipal
+                        services, or in community challenges.</p>
                     <div class="mt-6 flex justify-center">
-                        <div class="w-12 h-12 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition-all duration-300">
                             <i data-feather="gift" class="text-emerald-400"></i>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="bg-black bg-opacity-80 backdrop-blur-md rounded-2xl overflow-hidden shadow-xl border border-emerald-500 border-opacity-30" data-aos="fade-up" data-aos-duration="1000">
+
+            <div class="bg-black bg-opacity-80 backdrop-blur-md rounded-2xl overflow-hidden shadow-xl border border-emerald-500 border-opacity-30"
+                data-aos="fade-up" data-aos-duration="1000">
                 <div class="grid md:grid-cols-2">
                     <div class="p-8 md:p-12">
                         <h3 class="text-2xl font-bold text-white mb-4 text-glow">The Green Vendor Program</h3>
-                        <p class="text-gray-300 mb-6">Vendors who properly log their waste earn Green Vendor badges, attracting more customers and gaining visibility on our platform.</p>
+                        <p class="text-gray-300 mb-6">Vendors who properly log their waste earn Green Vendor badges,
+                            attracting more customers and gaining visibility on our platform.</p>
                         <ul class="space-y-3 mb-8">
                             <li class="flex items-start">
                                 <i data-feather="check-circle" class="text-emerald-400 mr-2 mt-1 flex-shrink-0"></i>
@@ -386,16 +500,20 @@
                                 <span class="text-gray-300">Access to premium analytics</span>
                             </li>
                         </ul>
-                        <a href="#join" class="btn-primary inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white">
+                        <a href="#join"
+                            class="btn-primary inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white">
                             Become a Green Vendor
                             <i data-feather="arrow-right" class="ml-2 w-4"></i>
                         </a>
                     </div>
                     <div class="bg-black bg-opacity-40 p-8 flex items-center justify-center">
                         <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Green Vendor" class="rounded-lg shadow-md w-full max-w-xs">
-                            <div class="absolute -top-4 -right-4 bg-black bg-opacity-80 rounded-full p-2 shadow-lg border border-emerald-500 border-opacity-30">
-                                <div class="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                                alt="Green Vendor" class="rounded-lg shadow-md w-full max-w-xs">
+                            <div
+                                class="absolute -top-4 -right-4 bg-black bg-opacity-80 rounded-full p-2 shadow-lg border border-emerald-500 border-opacity-30">
+                                <div
+                                    class="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center">
                                     <i data-feather="award" class="text-emerald-400"></i>
                                 </div>
                             </div>
@@ -407,246 +525,293 @@
     </section>
 
     <!-- Dashboard Section -->
-    <section id="dashboard" class="py-20 section-bg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
-                <h2 class="text-3xl font-bold text-white mb-4 text-glow">Municipal Dashboard</h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">AI-powered insights that transform reactive cleanup into proactive planning.</p>
-            </div>
-            
-            <div class="bg-black bg-opacity-90 rounded-2xl overflow-hidden shadow-2xl border border-emerald-500 border-opacity-30" data-aos="fade-up" data-aos-duration="1000">
-                <div class="p-4 bg-black bg-opacity-80 flex items-center border-b border-emerald-500 border-opacity-20">
-                    <div class="flex space-x-2">
-                        <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
-                        <div class="w-3 h-3 rounded-full bg-emerald-300"></div>
-                    </div>
-                    <div class="ml-4 text-sm text-emerald-400">municipal-dashboard.binthere.io</div>
-                </div>
-                <div class="p-6 md:p-8 grid md:grid-cols-3 gap-6">
-                    <div class="dashboard-card rounded-xl p-6 col-span-2">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="font-bold text-lg text-white">Waste Heatmap</h3>
-                            <div class="flex items-center text-sm">
-                                <span class="mr-2 text-emerald-400">Live Data</span>
-                                <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                            </div>
-                        </div>
-                        <div class="heatmap h-64 rounded-lg mb-4 relative overflow-hidden">
-                            <!-- Real Map Background with Waste Heatmap Overlay -->
-                            <div class="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-700 to-slate-600" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 400 300\"><defs><pattern id=\"grid\" width=\"20\" height=\"20\" patternUnits=\"userSpaceOnUse\"><path d=\"M 20 0 L 0 0 0 20\" fill=\"none\" stroke=\"%23ffffff\" stroke-width=\"0.5\" opacity=\"0.1\"/></pattern></defs><rect width=\"400\" height=\"300\" fill=\"%231e293b\"/><rect width=\"400\" height=\"300\" fill=\"url(%23grid)\"/><circle cx=\"80\" cy=\"60\" r=\"15\" fill=\"%23ef4444\" opacity=\"0.7\"/><circle cx=\"120\" cy=\"80\" r=\"12\" fill=\"%23f59e0b\" opacity=\"0.6\"/><circle cx=\"200\" cy=\"100\" r=\"18\" fill=\"%23ef4444\" opacity=\"0.8\"/><circle cx=\"280\" cy=\"70\" r=\"10\" fill=\"%23f59e0b\" opacity=\"0.5\"/><circle cx=\"320\" cy=\"120\" r=\"14\" fill=\"%23ef4444\" opacity=\"0.7\"/><circle cx=\"150\" cy=\"180\" r=\"8\" fill=\"%2310b981\" opacity=\"0.4\"/><circle cx=\"250\" cy=\"200\" r=\"11\" fill=\"%23f59e0b\" opacity=\"0.6\"/><circle cx=\"100\" cy=\"220\" r=\"9\" fill=\"%2310b981\" opacity=\"0.3\"/><circle cx=\"300\" cy=\"240\" r=\"13\" fill=\"%23ef4444\" opacity=\"0.6\"/></svg>'); background-size: cover; background-position: center;">
-                                
-                                <!-- Interactive Waste Heatmap Overlay -->
-                                <!-- High waste areas (red zones) -->
-                                <div class="absolute top-4 left-8 w-16 h-12 bg-red-500 bg-opacity-70 rounded-full blur-sm animate-pulse shadow-lg shadow-red-500/50"></div>
-                                <div class="absolute top-20 right-12 w-20 h-16 bg-red-600 bg-opacity-80 rounded-full blur-sm animate-pulse shadow-lg shadow-red-600/50" style="animation-delay: 0.5s;"></div>
-                                <div class="absolute bottom-8 left-16 w-14 h-10 bg-red-400 bg-opacity-60 rounded-full blur-sm animate-pulse shadow-lg shadow-red-400/50" style="animation-delay: 1s;"></div>
-                                
-                                <!-- Medium waste areas (yellow zones) -->
-                                <div class="absolute top-12 right-8 w-12 h-8 bg-yellow-500 bg-opacity-50 rounded-full blur-sm shadow-lg shadow-yellow-500/30"></div>
-                                <div class="absolute bottom-16 right-20 w-18 h-12 bg-yellow-400 bg-opacity-55 rounded-full blur-sm shadow-lg shadow-yellow-400/30"></div>
-                                <div class="absolute top-32 left-24 w-10 h-6 bg-yellow-600 bg-opacity-45 rounded-full blur-sm shadow-lg shadow-yellow-600/30"></div>
-                                
-                                <!-- Low waste areas (green zones) -->
-                                <div class="absolute top-8 left-32 w-8 h-6 bg-emerald-400 bg-opacity-40 rounded-full blur-sm shadow-lg shadow-emerald-400/20"></div>
-                                <div class="absolute bottom-12 left-8 w-6 h-4 bg-emerald-300 bg-opacity-35 rounded-full blur-sm shadow-lg shadow-emerald-300/20"></div>
-                                <div class="absolute top-24 right-24 w-10 h-8 bg-emerald-500 bg-opacity-45 rounded-full blur-sm shadow-lg shadow-emerald-500/20"></div>
-                                
-                                <!-- Map markers for specific locations -->
-                                <div class="absolute top-6 left-12 w-3 h-3 bg-white rounded-full border-2 border-red-500 animate-ping"></div>
-                                <div class="absolute top-22 right-16 w-3 h-3 bg-white rounded-full border-2 border-red-500 animate-ping" style="animation-delay: 0.5s;"></div>
-                                <div class="absolute bottom-10 left-20 w-3 h-3 bg-white rounded-full border-2 border-yellow-500 animate-ping" style="animation-delay: 1s;"></div>
-                                
-                                <!-- Legend -->
-                                <div class="absolute top-2 right-2 bg-black bg-opacity-80 rounded-lg p-3 text-xs border border-emerald-500 border-opacity-30">
-                                    <div class="flex items-center mb-1">
-                                        <div class="w-3 h-3 bg-red-500 rounded-full mr-2 shadow-sm"></div>
-                                        <span class="text-white font-medium">High Waste</span>
-                                    </div>
-                                    <div class="flex items-center mb-1">
-                                        <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2 shadow-sm"></div>
-                                        <span class="text-white font-medium">Medium Waste</span>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <div class="w-3 h-3 bg-emerald-500 rounded-full mr-2 shadow-sm"></div>
-                                        <span class="text-white font-medium">Low Waste</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- Live data indicator -->
-                                <div class="absolute bottom-2 left-2 bg-emerald-500 bg-opacity-90 rounded-full px-2 py-1 text-xs text-white font-medium flex items-center">
-                                    <div class="w-2 h-2 bg-white rounded-full animate-pulse mr-1"></div>
-                                    Live Data
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between text-xs text-gray-400">
-                            <span>High Waste</span>
-                            <span>Low Waste</span>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-6">
-                        <div class="dashboard-card rounded-xl p-6">
-                            <h3 class="font-bold text-lg mb-4 text-white">Digital Twin Simulation</h3>
-                            <div class="bg-black bg-opacity-60 rounded-lg h-32 flex items-center justify-center border border-emerald-500 border-opacity-20 relative overflow-hidden">
-                                <!-- Advanced 3D City Visualization -->
-                                <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-emerald-900 to-slate-800">
-                                    <!-- City skyline with varying heights -->
-                                    <div class="absolute bottom-1 left-2 w-2 h-6 bg-slate-400 opacity-70 transform rotate-1"></div>
-                                    <div class="absolute bottom-1 left-5 w-2 h-10 bg-slate-500 opacity-80 transform -rotate-1"></div>
-                                    <div class="absolute bottom-1 left-8 w-2 h-4 bg-slate-300 opacity-60"></div>
-                                    <div class="absolute bottom-1 left-11 w-2 h-8 bg-slate-400 opacity-75 transform rotate-0.5"></div>
-                                    <div class="absolute bottom-1 right-8 w-2 h-12 bg-slate-600 opacity-85 transform -rotate-0.5"></div>
-                                    <div class="absolute bottom-1 right-5 w-2 h-7 bg-slate-500 opacity-70"></div>
-                                    <div class="absolute bottom-1 right-2 w-2 h-9 bg-slate-400 opacity-80 transform rotate-1"></div>
-                                    
-                                    <!-- Street grid -->
-                                    <div class="absolute bottom-0 left-0 w-full h-1 bg-slate-600 opacity-40"></div>
-                                    <div class="absolute bottom-0 left-1/3 w-0.5 h-6 bg-slate-500 opacity-30"></div>
-                                    <div class="absolute bottom-0 left-2/3 w-0.5 h-6 bg-slate-500 opacity-30"></div>
-                                    
-                                    <!-- Waste collection points -->
-                                    <div class="absolute top-3 left-4 w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse shadow-lg shadow-red-400/50"></div>
-                                    <div class="absolute top-5 right-6 w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse shadow-lg shadow-yellow-400/50" style="animation-delay: 0.5s;"></div>
-                                    <div class="absolute top-4 left-10 w-1.5 h-1.5 bg-red-300 rounded-full animate-pulse shadow-lg shadow-red-300/50" style="animation-delay: 1s;"></div>
-                                    <div class="absolute top-6 right-3 w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50" style="animation-delay: 1.5s;"></div>
-                                    
-                                    <!-- Data flow lines -->
-                                    <div class="absolute top-1 left-1 w-8 h-0.5 bg-emerald-400 opacity-60 animate-pulse"></div>
-                                    <div class="absolute top-2 right-1 w-6 h-0.5 bg-emerald-300 opacity-50 animate-pulse" style="animation-delay: 0.3s;"></div>
-                                    <div class="absolute top-3 left-1/2 w-4 h-0.5 bg-emerald-500 opacity-70 animate-pulse" style="animation-delay: 0.6s;"></div>
-                                    
-                                    <!-- AI processing indicators -->
-                                    <div class="absolute top-1 left-1 w-1 h-1 bg-emerald-300 rounded-full animate-ping"></div>
-                                    <div class="absolute top-1 right-1 w-1 h-1 bg-emerald-400 rounded-full animate-ping" style="animation-delay: 0.2s;"></div>
-                                    <div class="absolute top-2 left-1/2 w-1 h-1 bg-emerald-500 rounded-full animate-ping" style="animation-delay: 0.4s;"></div>
-                                    
-                                    <!-- Neural network visualization -->
-                                    <div class="absolute top-1 left-1/4 w-0.5 h-0.5 bg-blue-400 rounded-full animate-pulse"></div>
-                                    <div class="absolute top-1 right-1/4 w-0.5 h-0.5 bg-blue-300 rounded-full animate-pulse" style="animation-delay: 0.1s;"></div>
-                                    <div class="absolute top-2 left-1/3 w-0.5 h-0.5 bg-blue-500 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
-                                    <div class="absolute top-2 right-1/3 w-0.5 h-0.5 bg-blue-400 rounded-full animate-pulse" style="animation-delay: 0.3s;"></div>
-                                </div>
-                                <i data-feather="cpu" class="text-emerald-400 w-8 h-8 relative z-10 drop-shadow-lg"></i>
-                            </div>
-                            <p class="text-sm text-gray-300 mt-4">AI-powered prediction of waste patterns for upcoming events and festivals.</p>
-                            <div class="mt-3 flex items-center justify-between">
-                                <div class="flex items-center text-xs text-emerald-400">
-                                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse mr-2"></div>
-                                    <span>Real-time Analysis</span>
-                                </div>
-                                <div class="flex items-center text-xs text-blue-400">
-                                    <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse mr-2"></div>
-                                    <span>AI Processing</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="dashboard-card rounded-xl p-6">
-                            <h3 class="font-bold text-lg mb-4 text-white">Top Contributors</h3>
-                            <div class="space-y-4">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center">
-                                        <i data-feather="user" class="text-emerald-400 w-4"></i>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-sm font-medium text-white">@clean_city_hero</p>
-                                        <p class="text-xs text-gray-400">128 reports</p>
-                                    </div>
-                                    <div class="ml-auto text-sm font-medium text-emerald-400">1,024 ♻️</div>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center">
-                                        <i data-feather="shopping-bag" class="text-emerald-400 w-4"></i>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-sm font-medium text-white">Chai Point</p>
-                                        <p class="text-xs text-gray-400">Green Vendor</p>
-                                    </div>
-                                    <div class="ml-auto text-sm font-medium text-emerald-400">85% ↓ waste</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-16 grid md:grid-cols-2 gap-12 items-center">
-                <div data-aos="fade-right" data-aos-duration="1000">
-                    <h3 class="text-2xl font-bold text-white mb-4 text-glow">From Reactive to Proactive</h3>
-                    <p class="text-gray-300 mb-6">Our AI analyzes historical data and current trends to predict waste surges before they happen, allowing municipalities to:</p>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-start">
-                            <i data-feather="check" class="text-emerald-400 mr-2 mt-1 flex-shrink-0"></i>
-                            <span class="text-gray-300">Optimize waste collection routes in real-time</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i data-feather="check" class="text-emerald-400 mr-2 mt-1 flex-shrink-0"></i>
-                            <span class="text-gray-300">Deploy temporary bins before major events</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i data-feather="check" class="text-emerald-400 mr-2 mt-1 flex-shrink-0"></i>
-                            <span class="text-gray-300">Measure the impact of policy changes</span>
-                        </li>
-                    </ul>
-                </div>
-                <div data-aos="fade-left" data-aos-duration="1000" class="bg-black bg-opacity-60 backdrop-blur-md p-8 rounded-2xl border border-emerald-500 border-opacity-20">
-                    <div class="flex items-center mb-6">
-                        <div class="w-12 h-12 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center mr-4">
-                            <i data-feather="trending-up" class="text-emerald-400"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-white">Impact Metrics</h4>
-                            <p class="text-sm text-gray-400">Pilot program results</p>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-3 gap-4 text-center">
-                        <div class="bg-black bg-opacity-40 p-4 rounded-lg border border-emerald-500 border-opacity-20">
-                            <div class="text-2xl font-bold text-emerald-400">73%</div>
-                            <div class="text-xs text-gray-400">More Reports</div>
-                        </div>
-                        <div class="bg-black bg-opacity-40 p-4 rounded-lg border border-emerald-500 border-opacity-20">
-                            <div class="text-2xl font-bold text-emerald-400">42%</div>
-                            <div class="text-xs text-gray-400">Less Street Waste</div>
-                        </div>
-                        <div class="bg-black bg-opacity-40 p-4 rounded-lg border border-emerald-500 border-opacity-20">
-                            <div class="text-2xl font-bold text-emerald-400">89</div>
-                            <div class="text-xs text-gray-400">Green Vendors</div>
-                        </div>
-                    </div>
-                    <div class="mt-6 bg-black bg-opacity-40 p-4 rounded-lg border border-emerald-500 border-opacity-20">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-sm font-medium text-white">BinCoin Circulation</span>
-                            <span class="text-xs bg-emerald-500 bg-opacity-20 text-emerald-300 px-2 py-1 rounded-full border border-emerald-500 border-opacity-30">+24%</span>
-                        </div>
-                        <div class="w-full bg-gray-700 rounded-full h-2">
-                            <div class="bg-emerald-500 h-2 rounded-full" style="width: 75%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<section id="dashboard" class="py-20 section-bg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
+        <h2 class="text-3xl font-bold text-white mb-4 text-glow">Municipal Dashboard</h2>
+        <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+          AI-powered insights that transform reactive cleanup into proactive planning.
+        </p>
+      </div>
+  
+      <div
+        class="bg-black bg-opacity-90 rounded-2xl overflow-hidden shadow-2xl border border-emerald-500 border-opacity-30"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+      >
+        <div
+          class="p-4 bg-black bg-opacity-80 flex items-center border-b border-emerald-500 border-opacity-20"
+        >
+          <div class="flex space-x-2">
+            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+            <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+            <div class="w-3 h-3 rounded-full bg-emerald-300"></div>
+          </div>
+          <div class="ml-4 text-sm text-emerald-400">municipal-dashboard.binthere.io</div>
         </div>
-    </section>
+  
+        <div class="p-6 md:p-8 grid md:grid-cols-3 gap-6">
+          <!-- LEFT SIDE: Waste Heatmap -->
+          <div class="dashboard-card rounded-xl p-6 col-span-2 relative">
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h3 class="font-bold text-lg text-white">Chennai Waste Heatmap</h3>
+                <p class="text-sm text-gray-400">
+                  Real-time waste concentration data across Chennai
+                </p>
+              </div>
+              <div class="flex items-center text-sm">
+                <span class="mr-2 text-emerald-400">Live Data</span>
+                <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+              </div>
+            </div>
+  
+            <!-- Leaflet Map -->
+            <div id="map" class="w-full h-96 md:h-[30rem] rounded-lg overflow-hidden"></div>
+  
+            <!-- Leaflet CSS & JS -->
+            <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+            <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  
+            <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                var map = L.map("map", {
+                  zoomControl: false,
+                  dragging: false, // Lock map in place
+                  touchZoom: false,
+                  doubleClickZoom: false,
+                  scrollWheelZoom: false,
+                  boxZoom: false,
+                  keyboard: false
+                }).setView([13.0827, 80.2707], 12);
+
+                // OpenStreetMap Tiles
+                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                  maxZoom: 19,
+                  attribution: "&copy; OpenStreetMap contributors",
+                }).addTo(map);
+
+                // Function to add smooth blobs
+                function addBlob(lat, lng, color, opacity, radius) {
+                  L.circle([lat, lng], {
+                    stroke: false,
+                    fillColor: color,
+                    fillOpacity: opacity,
+                    radius: radius,
+                  }).addTo(map);
+                }
+
+                // High Waste (Red Zones) - Positioned on land areas
+                addBlob(13.085, 80.245, "red", 0.45, 1200); // Anna Nagar area
+                addBlob(13.035, 80.215, "red", 0.5, 1000);  // T. Nagar area
+                addBlob(13.025, 80.265, "red", 0.5, 1100); // Mylapore area
+                addBlob(12.925, 80.195, "red", 0.45, 1300); // Tambaram area
+                addBlob(13.075, 80.235, "red", 0.4, 1150); // Kilpauk area
+                addBlob(13.015, 80.185, "red", 0.5, 1050); // Saidapet area
+                addBlob(13.055, 80.205, "red", 0.45, 1250); // Egmore area
+                addBlob(12.985, 80.225, "red", 0.4, 1100); // Guindy area
+                addBlob(13.095, 80.195, "red", 0.5, 1000); // Perambur area
+                addBlob(13.045, 80.255, "red", 0.45, 1200); // Triplicane area
+                addBlob(12.965, 80.165, "red", 0.4, 1300); // Pallavaram area
+                addBlob(13.115, 80.215, "red", 0.5, 1050); // Vyasarpadi area
+                addBlob(13.065, 80.195, "red", 0.45, 1200); // Nungambakkam area
+                addBlob(13.125, 80.245, "red", 0.5, 1000); // Washermanpet area
+                addBlob(12.995, 80.175, "red", 0.4, 1150); // Velachery area
+                addBlob(13.155, 80.205, "red", 0.45, 1100); // Manali area
+                addBlob(12.935, 80.185, "red", 0.5, 1050); // Pallavaram area
+                addBlob(13.175, 80.225, "red", 0.4, 1200); // Ennore area
+                addBlob(12.875, 80.165, "red", 0.45, 1150); // Chengalpattu area
+                addBlob(13.195, 80.245, "red", 0.5, 1000); // Thiruvottiyur area
+                addBlob(12.815, 80.145, "red", 0.4, 1100); // Maraimalai Nagar
+
+                // Medium Waste (Yellow Zones) - Positioned on land areas
+                addBlob(13.095, 80.225, "yellow", 0.35, 900);  // Adyar area
+                addBlob(13.065, 80.275, "yellow", 0.4, 850);   // Central Chennai
+                addBlob(13.015, 80.235, "yellow", 0.35, 950);  // South Chennai
+                addBlob(12.975, 80.175, "yellow", 0.4, 800);   // Southern suburbs
+                addBlob(13.105, 80.185, "yellow", 0.35, 900);  // Purasawalkam area
+                addBlob(13.125, 80.235, "yellow", 0.4, 850);   // Washermanpet area
+                addBlob(13.085, 80.275, "yellow", 0.35, 950);  // Royapuram area
+                addBlob(13.005, 80.255, "yellow", 0.4, 800);   // Mandaveli area
+                addBlob(12.955, 80.195, "yellow", 0.35, 900);  // Chromepet area
+                addBlob(13.135, 80.255, "yellow", 0.4, 850);   // Tondiarpet area
+                addBlob(13.075, 80.195, "yellow", 0.35, 950);  // Ayanavaram area
+                addBlob(12.945, 80.175, "yellow", 0.4, 800);   // Tambaram East area
+                addBlob(13.155, 80.225, "yellow", 0.35, 900);  // Manali area
+                addBlob(13.035, 80.285, "yellow", 0.4, 850);   // Mylapore East area
+                addBlob(12.935, 80.155, "yellow", 0.35, 950);  // Pallavaram East area
+                addBlob(13.185, 80.195, "yellow", 0.4, 850);   // Ennore East area
+                addBlob(12.905, 80.135, "yellow", 0.35, 900);  // Chengalpattu West
+                addBlob(13.205, 80.215, "yellow", 0.4, 800);   // Thiruvottiyur West
+                addBlob(12.885, 80.125, "yellow", 0.35, 950);  // Maraimalai Nagar West
+                addBlob(13.225, 80.235, "yellow", 0.4, 850);   // Kasimedu West
+                addBlob(12.865, 80.115, "yellow", 0.35, 900);  // Chengalpattu South
+                addBlob(13.245, 80.255, "yellow", 0.4, 800);   // Kasimedu South
+                addBlob(12.845, 80.105, "yellow", 0.35, 950);  // Chengalpattu East
+                addBlob(13.265, 80.275, "yellow", 0.4, 850);   // Kasimedu East
+                addBlob(12.825, 80.095, "yellow", 0.35, 900);  // Chengalpattu North
+                addBlob(13.285, 80.295, "yellow", 0.4, 800);   // Kasimedu North
+
+                // Low Waste (Green Zones) - Positioned on land areas
+                addBlob(13.105, 80.255, "green", 0.25, 700);   // North Chennai
+                addBlob(13.045, 80.285, "green", 0.3, 650);    // East Chennai
+                addBlob(12.995, 80.245, "green", 0.3, 750);    // Central South
+                addBlob(12.945, 80.205, "green", 0.3, 600);    // Far South
+                addBlob(13.165, 80.245, "green", 0.25, 700);   // Manali New Town
+                addBlob(13.145, 80.195, "green", 0.3, 650);   // Madhavaram area
+                addBlob(13.175, 80.215, "green", 0.3, 750);   // Ennore area
+                addBlob(12.915, 80.145, "green", 0.3, 600);   // Chengalpattu area
+                addBlob(13.195, 80.235, "green", 0.25, 700);  // Thiruvottiyur area
+                addBlob(12.895, 80.135, "green", 0.3, 650);   // Maraimalai Nagar
+                addBlob(13.215, 80.255, "green", 0.3, 750);   // Kasimedu area
+                addBlob(12.875, 80.125, "green", 0.3, 600);   // Chengalpattu East
+                addBlob(13.235, 80.275, "green", 0.25, 700);  // Kasimedu East
+                addBlob(12.855, 80.115, "green", 0.3, 650);   // Chengalpattu South
+                addBlob(13.255, 80.295, "green", 0.3, 750);   // Kasimedu South
+                addBlob(12.835, 80.105, "green", 0.3, 600);   // Chengalpattu West
+                addBlob(13.275, 80.315, "green", 0.25, 700);  // Kasimedu West
+                addBlob(12.815, 80.095, "green", 0.3, 650);   // Chengalpattu North
+                addBlob(13.295, 80.335, "green", 0.3, 750);   // Kasimedu North
+                addBlob(12.795, 80.085, "green", 0.3, 600);   // Chengalpattu Central
+                addBlob(13.315, 80.355, "green", 0.25, 700);  // Kasimedu Central
+                addBlob(13.335, 80.375, "green", 0.3, 650);   // Kasimedu Outer
+                addBlob(12.775, 80.075, "green", 0.3, 750);   // Chengalpattu Outer
+                addBlob(13.355, 80.395, "green", 0.25, 700);  // Kasimedu Far North
+                addBlob(12.755, 80.065, "green", 0.3, 650);   // Chengalpattu Far South
+                addBlob(13.375, 80.415, "green", 0.3, 750);   // Kasimedu Far East
+                addBlob(12.735, 80.055, "green", 0.25, 700);  // Chengalpattu Far West
+                addBlob(13.395, 80.435, "green", 0.3, 650);   // Kasimedu Far Central
+                addBlob(12.715, 80.045, "green", 0.3, 750);   // Chengalpattu Far North
+                addBlob(13.415, 80.455, "green", 0.25, 700);  // Kasimedu Far South
+                addBlob(12.695, 80.035, "green", 0.3, 650);   // Chengalpattu Far East
+                addBlob(13.435, 80.475, "green", 0.3, 750);   // Kasimedu Far West
+                addBlob(12.675, 80.025, "green", 0.25, 700);  // Chengalpattu Far Central
+                addBlob(13.455, 80.495, "green", 0.3, 650);   // Kasimedu Far North
+                addBlob(12.655, 80.015, "green", 0.3, 750);   // Chengalpattu Far South
+  
+                // Floating Legend
+                var legend = L.control({ position: "topright" });
+                legend.onAdd = function () {
+                  var div = L.DomUtil.create(
+                    "div",
+                    "rounded-lg shadow-lg p-3 text-xs bg-black bg-opacity-80 border border-emerald-500 border-opacity-30"
+                  );
+                  div.innerHTML = `
+                    <div class="flex items-center mb-1">
+                      <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                      <span class="text-white font-medium">High Waste</span>
+                    </div>
+                    <div class="flex items-center mb-1">
+                      <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                      <span class="text-white font-medium">Medium Waste</span>
+                    </div>
+                    <div class="flex items-center">
+                      <div class="w-3 h-3 bg-emerald-500 rounded-full mr-2"></div>
+                      <span class="text-white font-medium">Low Waste</span>
+                    </div>
+                  `;
+                  return div;
+                };
+                legend.addTo(map);
+  
+                // Live Data Indicator
+                var liveIndicator = L.control({ position: "bottomleft" });
+                liveIndicator.onAdd = function () {
+                  var div = L.DomUtil.create(
+                    "div",
+                    "bg-emerald-500 bg-opacity-90 rounded-full px-2 py-1 text-xs text-white font-medium flex items-center"
+                  );
+                  div.innerHTML =
+                    '<div class="w-2 h-2 bg-white rounded-full animate-pulse mr-1"></div> Live Data';
+                  return div;
+                };
+                liveIndicator.addTo(map);
+              });
+            </script>
+          </div>
+  
+          <!-- RIGHT SIDE: Simulation + Contributors -->
+          <div class="space-y-6">
+            <!-- Digital Twin Simulation -->
+            <div class="dashboard-card rounded-xl p-6">
+              <h3 class="font-bold text-lg mb-4 text-white">Digital Twin Simulation</h3>
+              <div
+                class="bg-black bg-opacity-60 rounded-lg h-32 flex items-center justify-center border border-emerald-500 border-opacity-20 relative overflow-hidden"
+              >
+                <div
+                  class="absolute inset-0 bg-gradient-to-br from-slate-900 via-emerald-900 to-slate-800"
+                ></div>
+                <i
+                  data-feather="cpu"
+                  class="text-emerald-400 w-8 h-8 relative z-10 drop-shadow-lg"
+                ></i>
+              </div>
+              <p class="text-sm text-gray-300 mt-4">
+                AI-powered prediction of waste patterns for upcoming events and festivals.
+              </p>
+            </div>
+  
+            <!-- Top Contributors -->
+            <div class="dashboard-card rounded-xl p-6">
+              <h3 class="font-bold text-lg mb-4 text-white">Top Contributors</h3>
+              <div class="space-y-4">
+                <div class="flex items-center">
+                  <div
+                    class="w-8 h-8 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center"
+                  >
+                    <i data-feather="user" class="text-emerald-400 w-4"></i>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-white">@clean_city_hero</p>
+                    <p class="text-xs text-gray-400">128 reports</p>
+                  </div>
+                  <div class="ml-auto text-sm font-medium text-emerald-400">1,024 ♻️</div>
+                </div>
+  
+                <div class="flex items-center">
+                  <div
+                    class="w-8 h-8 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center"
+                  >
+                    <i data-feather="shopping-bag" class="text-emerald-400 w-4"></i>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-white">Chai Point</p>
+                    <p class="text-xs text-gray-400">Green Vendor</p>
+                  </div>
+                  <div class="ml-auto text-sm font-medium text-emerald-400">85% ↓ waste</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
 
     <!-- Benefits Section -->
     <section id="benefits" class="py-20 bg-black">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
                 <h2 class="text-3xl font-bold text-white mb-4 text-glow">Why BinCoin Matters</h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">Creating value for all stakeholders in the waste management ecosystem.</p>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">Creating value for all stakeholders in the waste
+                    management ecosystem.</p>
             </div>
-            
+
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-black bg-opacity-60 backdrop-blur-md rounded-xl shadow-sm overflow-hidden border border-emerald-500 border-opacity-20 card-hover" data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-black bg-opacity-60 backdrop-blur-md rounded-xl shadow-sm overflow-hidden border border-emerald-500 border-opacity-20 card-hover"
+                    data-aos="fade-up" data-aos-delay="100">
                     <div class="h-48 bg-emerald-500 bg-opacity-10 flex items-center justify-center">
-                        <div class="w-20 h-20 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center">
+                        <div
+                            class="w-20 h-20 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center">
                             <i data-feather="users" class="text-emerald-400 w-10 h-10"></i>
                         </div>
                     </div>
                     <div class="p-6">
                         <h3 class="font-bold text-xl mb-3 text-white">For Citizens</h3>
-                        <p class="text-gray-300 mb-4">Gamified civic responsibility with tangible rewards. Earn BinCoins for reports and participate in community challenges.</p>
+                        <p class="text-gray-300 mb-4">Gamified civic responsibility with tangible rewards. Earn BinCoins
+                            for reports and participate in community challenges.</p>
                         <ul class="space-y-2">
                             <li class="flex items-start">
                                 <i data-feather="check" class="text-emerald-400 mr-2 mt-1 flex-shrink-0"></i>
@@ -663,16 +828,19 @@
                         </ul>
                     </div>
                 </div>
-                
-                <div class="bg-black bg-opacity-60 backdrop-blur-md rounded-xl shadow-sm overflow-hidden border border-emerald-500 border-opacity-20 card-hover" data-aos="fade-up" data-aos-delay="200">
+
+                <div class="bg-black bg-opacity-60 backdrop-blur-md rounded-xl shadow-sm overflow-hidden border border-emerald-500 border-opacity-20 card-hover"
+                    data-aos="fade-up" data-aos-delay="200">
                     <div class="h-48 bg-emerald-500 bg-opacity-10 flex items-center justify-center">
-                        <div class="w-20 h-20 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center">
+                        <div
+                            class="w-20 h-20 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center">
                             <i data-feather="shopping-cart" class="text-emerald-400 w-10 h-10"></i>
                         </div>
                     </div>
                     <div class="p-6">
                         <h3 class="font-bold text-xl mb-3 text-white">For Vendors</h3>
-                        <p class="text-gray-300 mb-4">Gain visibility and customer trust by becoming a Green Vendor. Access valuable waste analytics for your business.</p>
+                        <p class="text-gray-300 mb-4">Gain visibility and customer trust by becoming a Green Vendor.
+                            Access valuable waste analytics for your business.</p>
                         <ul class="space-y-2">
                             <li class="flex items-start">
                                 <i data-feather="check" class="text-emerald-400 mr-2 mt-1 flex-shrink-0"></i>
@@ -689,16 +857,19 @@
                         </ul>
                     </div>
                 </div>
-                
-                <div class="bg-black bg-opacity-60 backdrop-blur-md rounded-xl shadow-sm overflow-hidden border border-emerald-500 border-opacity-20 card-hover" data-aos="fade-up" data-aos-delay="300">
+
+                <div class="bg-black bg-opacity-60 backdrop-blur-md rounded-xl shadow-sm overflow-hidden border border-emerald-500 border-opacity-20 card-hover"
+                    data-aos="fade-up" data-aos-delay="300">
                     <div class="h-48 bg-emerald-500 bg-opacity-10 flex items-center justify-center">
-                        <div class="w-20 h-20 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center">
+                        <div
+                            class="w-20 h-20 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center">
                             <i data-feather="home" class="text-emerald-400 w-10 h-10"></i>
                         </div>
                     </div>
                     <div class="p-6">
                         <h3 class="font-bold text-xl mb-3 text-white">For Municipalities</h3>
-                        <p class="text-gray-300 mb-4">Transform from reactive cleanup to proactive planning with AI-powered waste predictions and Digital Twin simulations.</p>
+                        <p class="text-gray-300 mb-4">Transform from reactive cleanup to proactive planning with
+                            AI-powered waste predictions and Digital Twin simulations.</p>
                         <ul class="space-y-2">
                             <li class="flex items-start">
                                 <i data-feather="check" class="text-emerald-400 mr-2 mt-1 flex-shrink-0"></i>
@@ -716,12 +887,14 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="mt-16 bg-emerald-600 rounded-2xl overflow-hidden border border-emerald-400 border-opacity-30 card-hover" data-aos="fade-up" data-aos-duration="1000">
+
+            <div class="mt-16 bg-emerald-600 rounded-2xl overflow-hidden border border-emerald-400 border-opacity-30 card-hover"
+                data-aos="fade-up" data-aos-duration="1000">
                 <div class="grid md:grid-cols-2">
                     <div class="p-8 md:p-12 text-white">
                         <h3 class="text-2xl font-bold mb-4 text-glow">Before & After BinCoin</h3>
-                        <p class="mb-6 opacity-90">See how college festivals transform from waste disasters to models of sustainability.</p>
+                        <p class="mb-6 opacity-90">See how college festivals transform from waste disasters to models of
+                            sustainability.</p>
                         <div class="space-y-4">
                             <div>
                                 <div class="flex justify-between text-sm mb-1">
@@ -754,19 +927,23 @@
                     </div>
                     <div class="bg-emerald-700 p-8 flex items-center justify-center">
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-white bg-opacity-10 rounded-lg p-4 text-center border border-white border-opacity-20">
+                            <div
+                                class="bg-white bg-opacity-10 rounded-lg p-4 text-center border border-white border-opacity-20">
                                 <div class="text-3xl font-bold mb-1">1.2k</div>
                                 <div class="text-xs opacity-80">BinCoins Earned</div>
                             </div>
-                            <div class="bg-white bg-opacity-10 rounded-lg p-4 text-center border border-white border-opacity-20">
+                            <div
+                                class="bg-white bg-opacity-10 rounded-lg p-4 text-center border border-white border-opacity-20">
                                 <div class="text-3xl font-bold mb-1">87</div>
                                 <div class="text-xs opacity-80">Active Vendors</div>
                             </div>
-                            <div class="bg-white bg-opacity-10 rounded-lg p-4 text-center border border-white border-opacity-20">
+                            <div
+                                class="bg-white bg-opacity-10 rounded-lg p-4 text-center border border-white border-opacity-20">
                                 <div class="text-3xl font-bold mb-1">64%</div>
                                 <div class="text-xs opacity-80">Less Waste</div>
                             </div>
-                            <div class="bg-white bg-opacity-10 rounded-lg p-4 text-center border border-white border-opacity-20">
+                            <div
+                                class="bg-white bg-opacity-10 rounded-lg p-4 text-center border border-white border-opacity-20">
                                 <div class="text-3xl font-bold mb-1">92%</div>
                                 <div class="text-xs opacity-80">Satisfaction</div>
                             </div>
@@ -782,41 +959,51 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
                 <h2 class="text-3xl font-bold text-white mb-4 text-glow">Join the Movement</h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">Bin There is not just an app — it's a movement to make the invisible visible.</p>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">Bin There is not just an app — it's a movement to
+                    make the invisible visible.</p>
             </div>
-            
+
             <div class="grid md:grid-cols-3 gap-8 mb-16">
-                <div class="bg-black bg-opacity-60 backdrop-blur-md rounded-xl p-8 text-center border border-emerald-500 border-opacity-20 card-hover" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-20 h-20 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div class="bg-black bg-opacity-60 backdrop-blur-md rounded-xl p-8 text-center border border-emerald-500 border-opacity-20 card-hover"
+                    data-aos="fade-up" data-aos-delay="100">
+                    <div
+                        class="w-20 h-20 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
                         <i data-feather="user" class="text-emerald-400 w-8 h-8"></i>
                     </div>
                     <h3 class="font-bold text-xl mb-3 text-white">For Citizens</h3>
                     <p class="text-gray-300 mb-6">Download our app and start earning BinCoins today.</p>
                     <div class="flex justify-center space-x-3">
-                        <button class="bg-emerald-600 hover:bg-emerald-700 hover:scale-105 text-white px-4 py-2 rounded-lg flex items-center transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <button
+                            class="bg-emerald-600 hover:bg-emerald-700 hover:scale-105 text-white px-4 py-2 rounded-lg flex items-center transition-all duration-300 shadow-lg hover:shadow-xl">
                             <i data-feather="smartphone" class="mr-2 w-4"></i>
                             App Store
                         </button>
-                        <button class="bg-emerald-600 hover:bg-emerald-700 hover:scale-105 text-white px-4 py-2 rounded-lg flex items-center transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <button
+                            class="bg-emerald-600 hover:bg-emerald-700 hover:scale-105 text-white px-4 py-2 rounded-lg flex items-center transition-all duration-300 shadow-lg hover:shadow-xl">
                             <i data-feather="smartphone" class="mr-2 w-4"></i>
                             Play Store
                         </button>
                     </div>
                 </div>
-                
-                <div class="bg-black bg-opacity-60 backdrop-blur-md rounded-xl p-8 text-center border border-emerald-500 border-opacity-20 card-hover" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-20 h-20 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
+
+                <div class="bg-black bg-opacity-60 backdrop-blur-md rounded-xl p-8 text-center border border-emerald-500 border-opacity-20 card-hover"
+                    data-aos="fade-up" data-aos-delay="200">
+                    <div
+                        class="w-20 h-20 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
                         <i data-feather="shopping-bag" class="text-emerald-400 w-8 h-8"></i>
                     </div>
                     <h3 class="font-bold text-xl mb-3 text-white">For Vendors</h3>
                     <p class="text-gray-300 mb-6">Register your business and become a Green Vendor.</p>
-                    <a href="vendor-auth.html" class="btn-primary inline-block text-white px-6 py-2 rounded-lg font-medium">
+                    <a href="vendor-auth.html"
+                        class="btn-primary inline-block text-white px-6 py-2 rounded-lg font-medium">
                         Vendor Registration
                     </a>
                 </div>
-                
-                <div class="bg-black bg-opacity-60 backdrop-blur-md rounded-xl p-8 text-center border border-emerald-500 border-opacity-20 card-hover" data-aos="fade-up" data-aos-delay="300">
-                    <div class="w-20 h-20 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
+
+                <div class="bg-black bg-opacity-60 backdrop-blur-md rounded-xl p-8 text-center border border-emerald-500 border-opacity-20 card-hover"
+                    data-aos="fade-up" data-aos-delay="300">
+                    <div
+                        class="w-20 h-20 bg-emerald-500 bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
                         <i data-feather="home" class="text-emerald-400 w-8 h-8"></i>
                     </div>
                     <h3 class="font-bold text-xl mb-3 text-white">For Municipalities</h3>
@@ -826,12 +1013,14 @@
                     </button>
                 </div>
             </div>
-            
-            <div class="bg-black bg-opacity-90 rounded-2xl overflow-hidden border border-emerald-500 border-opacity-30" data-aos="fade-up" data-aos-duration="1000">
+
+            <div class="bg-black bg-opacity-90 rounded-2xl overflow-hidden border border-emerald-500 border-opacity-30"
+                data-aos="fade-up" data-aos-duration="1000">
                 <div class="grid md:grid-cols-2">
                     <div class="p-8 md:p-12">
                         <h3 class="text-2xl font-bold text-white mb-4 text-glow">Corporate Partnerships</h3>
-                        <p class="text-gray-300 mb-6">Sponsor BinCoins as part of your CSR/ESG initiatives and gain visibility among our eco-conscious community.</p>
+                        <p class="text-gray-300 mb-6">Sponsor BinCoins as part of your CSR/ESG initiatives and gain
+                            visibility among our eco-conscious community.</p>
                         <ul class="space-y-3 mb-8">
                             <li class="flex items-start">
                                 <i data-feather="check" class="text-emerald-400 mr-2 mt-1 flex-shrink-0"></i>
@@ -852,16 +1041,20 @@
                     </div>
                     <div class="bg-black bg-opacity-60 p-8 flex items-center justify-center">
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-black bg-opacity-40 rounded-lg p-4 flex items-center justify-center border border-emerald-500 border-opacity-20">
+                            <div
+                                class="bg-black bg-opacity-40 rounded-lg p-4 flex items-center justify-center border border-emerald-500 border-opacity-20">
                                 <div class="text-xs text-emerald-400">Your Logo Here</div>
                             </div>
-                            <div class="bg-black bg-opacity-40 rounded-lg p-4 flex items-center justify-center border border-emerald-500 border-opacity-20">
+                            <div
+                                class="bg-black bg-opacity-40 rounded-lg p-4 flex items-center justify-center border border-emerald-500 border-opacity-20">
                                 <div class="text-xs text-emerald-400">Your Logo Here</div>
                             </div>
-                            <div class="bg-black bg-opacity-40 rounded-lg p-4 flex items-center justify-center border border-emerald-500 border-opacity-20">
+                            <div
+                                class="bg-black bg-opacity-40 rounded-lg p-4 flex items-center justify-center border border-emerald-500 border-opacity-20">
                                 <div class="text-xs text-emerald-400">Your Logo Here</div>
                             </div>
-                            <div class="bg-black bg-opacity-40 rounded-lg p-4 flex items-center justify-center border border-emerald-500 border-opacity-20">
+                            <div
+                                class="bg-black bg-opacity-40 rounded-lg p-4 flex items-center justify-center border border-emerald-500 border-opacity-20">
                                 <div class="text-xs text-emerald-400">Your Logo Here</div>
                             </div>
                         </div>
@@ -880,7 +1073,8 @@
                         <i data-feather="trash-2" class="h-8 w-8 text-emerald-500 text-glow"></i>
                         <span class="ml-2 text-xl font-bold">Bin There</span>
                     </div>
-                    <p class="text-gray-400 mb-4">Making the invisible waste contributors visible through gamification and technology.</p>
+                    <p class="text-gray-400 mb-4">Making the invisible waste contributors visible through gamification
+                        and technology.</p>
                     <div class="flex space-x-4">
                         <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">
                             <i data-feather="twitter"></i>
@@ -899,40 +1093,71 @@
                 <div>
                     <h4 class="font-bold text-lg mb-4 text-emerald-400">Product</h4>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">How It Works</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">BinCoins</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Green Vendors</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Municipal Dashboard</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">How
+                                It Works</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">BinCoins</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Green
+                                Vendors</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Municipal
+                                Dashboard</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Pricing</a>
+                        </li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-bold text-lg mb-4 text-emerald-400">Company</h4>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">About Us</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Careers</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Blog</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Press</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Contact</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">About Us</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Careers</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Blog</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Press</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Contact</a>
+                        </li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-bold text-lg mb-4 text-emerald-400">Resources</h4>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Help Center</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Community</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Sustainability Reports</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">SDG-12</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">API Docs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Help
+                                Center</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Community</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Sustainability
+                                Reports</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">SDG-12</a>
+                        </li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">API
+                                Docs</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-emerald-500 border-opacity-20 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <div
+                class="border-t border-emerald-500 border-opacity-20 pt-8 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-gray-400 mb-4 md:mb-0">© 2023 Bin There. All rights reserved.</p>
                 <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Terms of Service</a>
-                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Cookie Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Privacy
+                        Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Terms of
+                        Service</a>
+                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors duration-300">Cookie
+                        Policy</a>
                 </div>
             </div>
         </div>
@@ -946,9 +1171,9 @@
             offset: 50,
             delay: 100
         });
-        
+
         feather.replace();
-        
+
         // Enhanced animations for eco-coins
         document.querySelectorAll('.eco-coin').forEach((coin, index) => {
             anime({
@@ -960,7 +1185,7 @@
                 delay: index * 500
             });
         });
-        
+
         // Smooth scroll behavior for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -974,13 +1199,13 @@
                 }
             });
         });
-        
+
         // Enhanced fade-in animation on scroll
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
-        
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -988,11 +1213,11 @@
                 }
             });
         }, observerOptions);
-        
+
         document.querySelectorAll('.fade-in').forEach(el => {
             observer.observe(el);
         });
-        
+
         // Parallax effect for hero section
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
@@ -1001,31 +1226,31 @@
                 heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
             }
         });
-        
+
         // Enhanced button hover effects
         document.querySelectorAll('.btn-primary').forEach(button => {
-            button.addEventListener('mouseenter', function() {
+            button.addEventListener('mouseenter', function () {
                 this.style.transform = 'translateY(-2px) scale(1.05)';
             });
-            
-            button.addEventListener('mouseleave', function() {
+
+            button.addEventListener('mouseleave', function () {
                 this.style.transform = 'translateY(0) scale(1)';
             });
         });
-        
+
         // Loading animation for cards
         document.querySelectorAll('.card-hover').forEach(card => {
-            card.addEventListener('mouseenter', function() {
+            card.addEventListener('mouseenter', function () {
                 this.style.transform = 'translateY(-8px) scale(1.02)';
                 this.style.boxShadow = '0 20px 40px rgba(16, 185, 129, 0.3)';
             });
-            
-            card.addEventListener('mouseleave', function() {
+
+            card.addEventListener('mouseleave', function () {
                 this.style.transform = 'translateY(0) scale(1)';
                 this.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
             });
         });
-        
+
         // Animate numbers on scroll
         const animateNumbers = () => {
             const numbers = document.querySelectorAll('[data-count]');
@@ -1034,7 +1259,7 @@
                 const duration = 2000;
                 const increment = target / (duration / 16);
                 let current = 0;
-                
+
                 const timer = setInterval(() => {
                     current += increment;
                     if (current >= target) {
@@ -1045,7 +1270,7 @@
                 }, 16);
             });
         };
-        
+
         // Trigger number animation when in view
         const numberObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1055,10 +1280,11 @@
                 }
             });
         });
-        
+
         document.querySelectorAll('.dashboard-card').forEach(card => {
             numberObserver.observe(card);
         });
     </script>
 </body>
+
 </html>
